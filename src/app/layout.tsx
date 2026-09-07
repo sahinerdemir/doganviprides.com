@@ -4,10 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import SmoothScroll from "@/components/SmoothScroll";
 import { BUSINESS_INFO } from "@/data/site-data";
 
 export const viewport: Viewport = {
-  themeColor: "#08080A",
+  themeColor: "#050507",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | Dogan VIP Rides",
   },
   description:
-    "Premier luxury VIP chauffeur, private airport transfers (JFK, EWR, LGA, Teterboro), hourly executive car service, and VIP Sprinter vans in New York & New Jersey. 24/7 live dispatch.",
+    "Premier luxury VIP chauffeur, private airport transfers (JFK, EWR, LGA, Teterboro), hourly executive car service, and 2026 VIP Sprinter vans in New York & New Jersey. 24/7 live dispatch.",
   keywords: [
     "VIP chauffeur NJ",
     "Executive car service NYC",
@@ -28,20 +29,11 @@ export const metadata: Metadata = {
     "Newark EWR luxury ride",
     "LaGuardia LGA black car service",
     "Teterboro private jet car service",
-    "Luxury SUV chauffeur New Jersey",
-    "Mercedes Sprinter VIP van NYC",
+    "2026 Cadillac Escalade chauffeur",
+    "2026 Mercedes S-Class ride NYC",
     "Hourly chauffeur Manhattan",
-    "Tri-State executive transportation",
     "Dogan VIP Rides",
   ],
-  authors: [{ name: "Dogan VIP Rides" }],
-  creator: "Dogan VIP Rides",
-  publisher: "Dogan VIP Rides",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
   alternates: {
     canonical: "/",
   },
@@ -58,7 +50,7 @@ export const metadata: Metadata = {
         url: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop",
         width: 1200,
         height: 630,
-        alt: "Dogan VIP Rides - Luxury Cadillac Escalade Chauffeur",
+        alt: "2026 Cadillac Escalade ESV - Dogan VIP Rides",
       },
     ],
   },
@@ -72,13 +64,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
   },
 };
 
@@ -88,22 +73,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
         <SchemaMarkup />
       </head>
-      <body className="bg-background text-zinc-100 antialiased selection:bg-gold-400 selection:text-black min-h-screen flex flex-col justify-between font-sans">
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <FloatingActions />
+      <body className="bg-[#050507] text-zinc-100 antialiased selection:bg-gold-400 selection:text-black min-h-screen flex flex-col justify-between font-sans">
+        <SmoothScroll>
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          <FloatingActions />
+        </SmoothScroll>
       </body>
     </html>
   );
