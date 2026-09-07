@@ -2,60 +2,46 @@
 
 import React from "react";
 import Image from "next/image";
-import { Shield, Star, Clock, Sparkles, Award } from "lucide-react";
 import BookingWidget from "./BookingWidget";
-import { BUSINESS_INFO } from "@/data/site-data";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 flex flex-col justify-center overflow-hidden bg-background">
-      {/* Background Decorative Gradients & Luxury Mesh */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(212,175,55,0.15),rgba(255,255,255,0))]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/80 to-background pointer-events-none" />
+    <section className="relative min-h-[92vh] flex flex-col justify-center items-center text-center px-4 pt-32 pb-20 overflow-hidden bg-[#050507]">
+      {/* Subtle Background Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gold-400/10 blur-[140px] pointer-events-none rounded-full" />
 
-      {/* Decorative Grid Lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Top Badges */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto mb-8">
-          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-surface-light/80 border border-gold-400/30 backdrop-blur-md shadow-gold-glow">
-            <Sparkles className="w-4 h-4 text-gold-400" />
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold-300">
-              New York & New Jersey Premier Chauffeur Service
-            </span>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-white leading-tight">
-            First-Class Rides. <br />
-            <span className="gold-text-gradient">Executive Precision.</span>
-          </h1>
-
-          <p className="text-sm sm:text-base lg:text-lg text-zinc-300 font-light leading-relaxed max-w-2xl mx-auto">
-            Experience bespoke private transportation with licensed chauffeurs across NYC, New Jersey, JFK, EWR, LGA, and Teterboro. Seamless airport transfers, hourly executive hire, and luxury event travel.
-          </p>
-
-          {/* Quick Trust Highlights */}
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 pt-2 text-xs text-zinc-300">
-            <div className="flex items-center space-x-1.5">
-              <Clock className="w-4 h-4 text-gold-400" />
-              <span>100% On-Time Guarantee</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <Shield className="w-4 h-4 text-gold-400" />
-              <span>TLC & DOT Certified Chauffeurs</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <Star className="w-4 h-4 text-gold-400 fill-gold-400" />
-              <span className="font-semibold text-white">4.9 / 5</span>
-              <span className="text-zinc-400">(Google Verified)</span>
-            </div>
-          </div>
+      <div className="max-w-4xl mx-auto space-y-6 relative z-10">
+        {/* Subtle Pill */}
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+          <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
+          <span className="text-[11px] font-medium tracking-widest text-zinc-300 uppercase">
+            New York &amp; New Jersey Premier Chauffeur
+          </span>
         </div>
 
-        {/* Dynamic Booking & Lead Capture Widget */}
-        <div className="mt-4">
+        {/* Minimalist Bold Headline */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+          Private Chauffeur Service. <br />
+          <span className="text-zinc-500 font-light">Without Compromise.</span>
+        </h1>
+
+        {/* Short Subtitle with Breathing Room */}
+        <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto font-normal leading-relaxed">
+          Pristine executive fleet, licensed professional chauffeurs, and guaranteed on-time airport transfers across JFK, EWR, LGA, and Manhattan.
+        </p>
+
+        {/* Booking Bar */}
+        <div className="pt-6 w-full">
           <BookingWidget />
+        </div>
+
+        {/* 3 Quick Minimal Metrics */}
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 pt-10 text-xs text-zinc-500 uppercase tracking-widest">
+          <div>Flight Delay Tracking</div>
+          <div>&bull;</div>
+          <div>All-Inclusive Flat Rates</div>
+          <div>&bull;</div>
+          <div>24/7 Dedicated Concierge</div>
         </div>
       </div>
     </section>
