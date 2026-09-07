@@ -101,7 +101,7 @@ export const FLEET_DATA: Vehicle[] = [
       "Acoustic Laminated Privacy Glass",
       "Chilled Artesian Water & Executive Amenities",
     ],
-    startingRate: "From $110/hr",
+    startingRate: "From $175/hr",
     idealFor: "Miami Airport Transfers, C-Suite Travel, South Beach VIP Trips",
   },
   {
@@ -121,7 +121,7 @@ export const FLEET_DATA: Vehicle[] = [
       "Privacy Electric Sunshades",
       "Bottled Artesian Water & Fresh Mints",
     ],
-    startingRate: "From $125/hr",
+    startingRate: "From $250/hr",
     idealFor: "VIP Solo Riders, Executive Meetings, Miami Gala Arrivals",
   },
   {
@@ -141,7 +141,7 @@ export const FLEET_DATA: Vehicle[] = [
       "Child Safety Seats Available Upon Request",
       "High-Speed Wi-Fi & Apple CarPlay Support",
     ],
-    startingRate: "From $95/hr",
+    startingRate: "From $150/hr",
     idealFor: "MIA/FLL Group Pickups, Yacht Charters, Family Travel",
   },
   {
@@ -161,7 +161,7 @@ export const FLEET_DATA: Vehicle[] = [
       "High-Power 110V Outlets & High-Speed Wi-Fi",
       "Dedicated Full-Capacity Luggage Bay",
     ],
-    startingRate: "From $165/hr",
+    startingRate: "From $250/hr",
     idealFor: "Miami Events, Corporate Roadshows, Palm Beach Parties",
   },
 ];
