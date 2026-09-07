@@ -13,7 +13,7 @@
   }
 
   body {
-    background-color: #050507;
+    background-color: #060608;
     color: #EDEDED;
     font-family: var(--font-inter);
     overflow-x: hidden;
@@ -31,33 +31,64 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #050507;
+  background: #060608;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1F1F24;
+  background: #23232A;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C5A059;
+  background: #D4AF37;
 }
 
-/* Ultra-Clean Glassmorphism */
-.glass-panel {
-  background: rgba(14, 14, 18, 0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Ambient Animated Glow Mesh */
+@keyframes ambientPulse {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translate(40px, -30px) scale(1.15);
+    opacity: 0.28;
+  }
 }
 
-.glass-panel-gold {
-  background: rgba(18, 17, 14, 0.8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(197, 160, 89, 0.25);
+@keyframes ambientPulse2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1.1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translate(-50px, 40px) scale(0.95);
+    opacity: 0.25;
+  }
 }
 
-.gold-gradient-text {
-  background: linear-gradient(135deg, #FFF6D6 0%, #D4AF37 50%, #A67C1E 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.ambient-glow-1 {
+  animation: ambientPulse 12s ease-in-out infinite;
+}
+
+.ambient-glow-2 {
+  animation: ambientPulse2 15s ease-in-out infinite;
+}
+
+/* Luxury Input Field Styles */
+.luxury-input {
+  background: rgba(22, 22, 28, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.luxury-input:focus {
+  background: rgba(28, 28, 36, 0.95);
+  border-color: #D4AF37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  outline: none;
+}
+
+.luxury-input::placeholder {
+  color: #8E8E9F;
+  font-weight: 400;
 }

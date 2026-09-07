@@ -8,7 +8,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import { BUSINESS_INFO } from "@/data/site-data";
 
 export const viewport: Viewport = {
-  themeColor: "#050507",
+  themeColor: "#060608",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -17,49 +17,50 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(BUSINESS_INFO.website),
   title: {
-    default: "Dogan VIP Rides | Luxury Chauffeur & Executive Car Service NY & NJ",
-    template: "%s | Dogan VIP Rides",
+    default: "Dogan VIP Rides | Miami Luxury Chauffeur & Executive Car Service",
+    template: "%s | Dogan VIP Rides Miami",
   },
   description:
-    "Premier luxury VIP chauffeur, private airport transfers (JFK, EWR, LGA, Teterboro), hourly executive car service, and 2026 VIP Sprinter vans in New York & New Jersey. 24/7 live dispatch.",
+    "Miami's premier luxury VIP chauffeur service, private airport transfers (MIA, FLL, PBI, OPF), hourly executive car service, and 2026 VIP Sprinter vans in South Florida & beyond. 24/7 live dispatch.",
   keywords: [
-    "VIP chauffeur NJ",
-    "Executive car service NYC",
-    "JFK airport private transfer",
-    "Newark EWR luxury ride",
-    "LaGuardia LGA black car service",
-    "Teterboro private jet car service",
-    "2026 Cadillac Escalade chauffeur",
-    "2026 Mercedes S-Class ride NYC",
-    "Hourly chauffeur Manhattan",
-    "Dogan VIP Rides",
+    "Miami VIP chauffeur",
+    "Executive car service Miami",
+    "Miami airport private transfer MIA",
+    "Fort Lauderdale FLL luxury ride",
+    "Opa Locka OPF private jet car service",
+    "Palm Beach chauffeur service",
+    "South Beach luxury black car",
+    "2026 Cadillac Escalade chauffeur Miami",
+    "2026 Mercedes S-Class ride Miami",
+    "Hourly chauffeur Brickell",
+    "Dogan VIP Rides Miami",
   ],
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Dogan VIP Rides | First-Class Executive Chauffeur Service NY & NJ",
+    title: "Dogan VIP Rides | Miami's Premier Executive Chauffeur Service",
     description:
-      "Experience first-class private transportation with licensed chauffeurs across NYC, NJ, JFK, EWR, LGA, and Teterboro. Guaranteed on-time airport transfers and luxury hourly hire.",
+      "Experience first-class private transportation with licensed chauffeurs across Miami, South Beach, Brickell, MIA, FLL, PBI, and Opa-Locka. Guaranteed on-time airport transfers and luxury hourly hire.",
     url: BUSINESS_INFO.website,
     siteName: BUSINESS_INFO.name,
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop",
+        url: "/fleet/cadillac-escalade-2026.jpg",
         width: 1200,
         height: 630,
-        alt: "2026 Cadillac Escalade ESV - Dogan VIP Rides",
+        alt: "2026 Cadillac Escalade ESV - Dogan VIP Rides Miami",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dogan VIP Rides | Executive Chauffeur Service NY & NJ",
+    title: "Dogan VIP Rides | Miami Executive Chauffeur Service",
     description:
-      "Premier VIP airport transfers and hourly chauffeur services in New York & New Jersey. Instant quotes & 24/7 dispatch.",
-    images: ["https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop"],
+      "Miami's premier VIP airport transfers and hourly chauffeur services in South Florida. Instant quotes & 24/7 dispatch.",
+    images: ["/fleet/cadillac-escalade-2026.jpg"],
   },
   robots: {
     index: true,
@@ -79,17 +80,23 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <SchemaMarkup />
       </head>
-      <body className="bg-[#050507] text-zinc-100 antialiased selection:bg-gold-400 selection:text-black min-h-screen flex flex-col justify-between font-sans">
+      <body className="bg-[#060608] text-zinc-100 antialiased selection:bg-gold-400 selection:text-black min-h-screen flex flex-col justify-between font-sans relative">
+        {/* Living Ambient Light Flow Elements */}
+        <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-gold-400/8 blur-[180px] pointer-events-none rounded-full ambient-glow-1 z-0" />
+        <div className="fixed bottom-1/4 right-1/4 w-[600px] h-[600px] bg-amber-500/6 blur-[200px] pointer-events-none rounded-full ambient-glow-2 z-0" />
+
         <SmoothScroll>
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-          <FloatingActions />
+          <div className="relative z-10 flex flex-col min-h-screen justify-between">
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            <FloatingActions />
+          </div>
         </SmoothScroll>
       </body>
     </html>
