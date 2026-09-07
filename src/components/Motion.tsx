@@ -19,13 +19,13 @@ export function Reveal({
   const getInitialPosition = () => {
     switch (direction) {
       case "up":
-        return { opacity: 0, y: 24 };
+        return { opacity: 0, y: 16 };
       case "down":
-        return { opacity: 0, y: -24 };
+        return { opacity: 0, y: -16 };
       case "left":
-        return { opacity: 0, x: 24 };
+        return { opacity: 0, x: 16 };
       case "right":
-        return { opacity: 0, x: -24 };
+        return { opacity: 0, x: -16 };
       default:
         return { opacity: 0, y: 0 };
     }
@@ -35,11 +35,11 @@ export function Reveal({
     <motion.div
       initial={getInitialPosition()}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: true, amount: 0.05 }}
       transition={{
-        duration: 0.75,
+        duration: 0.55,
         delay,
-        ease: [0.16, 1, 0.3, 1], // Gentle luxury cubic bezier ease
+        ease: [0.16, 1, 0.3, 1],
       }}
       className={className}
     >
@@ -51,7 +51,7 @@ export function Reveal({
 export function StaggerContainer({
   children,
   className = "",
-  staggerDelay = 0.12,
+  staggerDelay = 0.08,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -61,7 +61,7 @@ export function StaggerContainer({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: true, amount: 0.05 }}
       variants={{
         hidden: {},
         visible: {
@@ -87,12 +87,12 @@ export function StaggerItem({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 14 },
         visible: {
           opacity: 1,
           y: 0,
           transition: {
-            duration: 0.65,
+            duration: 0.5,
             ease: [0.16, 1, 0.3, 1],
           },
         },

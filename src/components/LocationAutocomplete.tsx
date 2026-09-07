@@ -88,15 +88,19 @@ export default function LocationAutocomplete({
     setFiltered(matches);
   }, [query]);
 
-  // Click outside listener to close dropdown
+  // Click / Touch outside listener to close dropdown
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, []);
 
   const handleSelect = (item: Suggestion) => {
@@ -122,7 +126,7 @@ export default function LocationAutocomplete({
         value={query}
         onChange={handleInputChange}
         onFocus={() => setIsOpen(true)}
-        className={`${className} w-full luxury-input rounded-xl px-4 py-3.5 text-sm pr-9`}
+        className={`${className} w-full luxury-input rounded-xl px-4 py-3.5 text-base sm:text-sm pr-9`}
       />
 
       {query && (
@@ -133,16 +137,16 @@ export default function LocationAutocomplete({
             onChange("");
             setFiltered([]);
           }}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white p-1"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white p-1.5 touch-manipulation"
         >
-          <X className="w-3.5 h-3.5" />
+          <X className="w-4 h-4" />
         </button>
       )}
 
       {/* Dropdown Suggestions */}
       {isOpen && filtered.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 bg-[#14141c] border border-white/15 rounded-2xl shadow-2xl z-50 overflow-hidden divide-y divide-white/5 animate-in fade-in zoom-in-95 duration-150">
-          <div className="px-3.5 py-1.5 text-[10px] font-bold text-gold-400 uppercase tracking-widest bg-black/40">
+        <div className="absolute top-full left-0 right-0 mt-1.5 bg-[#14141c] border border-white/20 rounded-2xl shadow-2xl z-[70] overflow-hidden divide-y divide-white/5 animate-in fade-in zoom-in-95 duration-150">
+          <div className="px-3.5 py-2 text-[10px] font-bold text-gold-400 uppercase tracking-widest bg-black/60">
             Suggested Locations &amp; Airports
           </div>
           {filtered.map((item) => {
@@ -150,8 +154,11 @@ export default function LocationAutocomplete({
             return (
               <div
                 key={item.id}
-                onClick={() => handleSelect(item)}
-                className="px-4 py-3 hover:bg-white/10 cursor-pointer flex items-center justify-between transition-colors group"
+                onMouseDown={(e) => {
+                  e.preventDefault(); // Prevent input blur before select
+                  handleSelect(item);
+                }}
+                className="px-4 py-3.5 hover:bg-white/10 active:bg-white/15 cursor-pointer flex items-center justify-between transition-colors group touch-manipulation"
               >
                 <div className="flex items-center space-x-3 overflow-hidden">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
@@ -160,10 +167,10 @@ export default function LocationAutocomplete({
                     {isAirport ? <Plane className="w-4 h-4" /> : <MapPin className="w-4 h-4" />}
                   </div>
                   <div className="truncate">
-                    <div className="text-xs sm:text-sm font-semibold text-white group-hover:text-gold-300 transition-colors truncate">
+                    <div className="text-sm font-semibold text-white group-hover:text-gold-300 transition-colors truncate">
                       {item.title}
                     </div>
-                    <div className="text-[11px] text-zinc-400 truncate">
+                    <div className="text-xs text-zinc-400 truncate">
                       {item.subtitle}
                     </div>
                   </div>

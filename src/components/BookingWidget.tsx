@@ -175,12 +175,12 @@ export default function BookingWidget() {
         {/* Subtle Gold Edge Highlight */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-80" />
 
-        {/* 3 Top Category Tabs */}
-        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 border-b border-white/10 pb-4 mb-5">
+        {/* 3 Top Category Tabs - Responsive Grid on Mobile */}
+        <div className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2 border-b border-white/10 pb-4 mb-5">
           <button
             type="button"
             onClick={() => { setActiveTab("transfer"); setError(""); }}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center space-x-2 ${
+            className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 ${
               activeTab === "transfer"
                 ? "bg-white text-black shadow-lg shadow-white/10"
                 : "text-zinc-400 hover:text-white hover:bg-white/5"
@@ -192,26 +192,28 @@ export default function BookingWidget() {
           <button
             type="button"
             onClick={() => { setActiveTab("hourly"); setError(""); }}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center space-x-2 ${
+            className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 ${
               activeTab === "hourly"
                 ? "bg-white text-black shadow-lg shadow-white/10"
                 : "text-zinc-400 hover:text-white hover:bg-white/5"
             }`}
           >
-            <span>Hourly Service</span>
+            <span className="hidden sm:inline">Hourly Service</span>
+            <span className="sm:hidden">Hourly</span>
           </button>
 
           <button
             type="button"
             onClick={() => { setActiveTab("corporate"); setError(""); }}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center space-x-2 ${
+            className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 ${
               activeTab === "corporate"
                 ? "bg-gradient-to-r from-gold-500 to-gold-400 text-black shadow-gold-glow"
                 : "text-zinc-400 hover:text-white hover:bg-white/5"
             }`}
           >
-            <Building2 className="w-4 h-4" />
-            <span>Corporate Transportation</span>
+            <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="hidden sm:inline">Corporate Transportation</span>
+            <span className="sm:hidden">Corporate</span>
           </button>
         </div>
 
