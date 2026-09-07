@@ -1,19 +1,10 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import { Clock, Shield, DollarSign, Sparkles } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { Reveal, StaggerContainer, StaggerItem } from "./Motion";
 
 export default function WhyChooseUs() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const yLight = useTransform(scrollYProgress, [0, 1], [-40, 60]);
-
   const points = [
     {
       icon: Clock,
@@ -34,18 +25,10 @@ export default function WhyChooseUs() {
 
   return (
     <section
-      ref={containerRef}
-      className="py-28 sm:py-36 bg-gradient-to-b from-[#060608] via-[#0e0e16] to-[#13131c] relative overflow-hidden border-t border-white/10"
+      className="py-24 sm:py-32 bg-gradient-to-b from-[#060608] via-[#0e0e16] to-[#13131c] relative overflow-hidden border-t border-white/10"
     >
-      {/* Floating Parallax Ambient Light Orbs */}
-      <motion.div
-        style={{ y: yLight }}
-        className="absolute top-10 right-1/4 w-[500px] h-[350px] bg-gold-400/10 blur-[150px] pointer-events-none rounded-full"
-      />
-      <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], [60, -40]) }}
-        className="absolute bottom-10 left-10 w-[450px] h-[300px] bg-indigo-500/8 blur-[170px] pointer-events-none rounded-full"
-      />
+      {/* High-Performance Radial Ambient Highlight */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(212,175,55,0.06)_0%,transparent_50%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
         <Reveal>

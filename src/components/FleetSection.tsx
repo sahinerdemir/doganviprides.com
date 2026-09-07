@@ -1,37 +1,19 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
-import { Users, Briefcase, ArrowUpRight, Sparkles, ShieldCheck } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 import { FLEET_DATA } from "@/data/site-data";
 import { Reveal, StaggerContainer, StaggerItem } from "./Motion";
 
 export default function FleetSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const yLight1 = useTransform(scrollYProgress, [0, 1], [-30, 50]);
-  const yLight2 = useTransform(scrollYProgress, [0, 1], [50, -30]);
-
   return (
     <section
       id="fleet"
-      ref={containerRef}
       className="py-24 sm:py-32 bg-gradient-to-b from-[#13131c] via-[#0d0f1a] to-[#121019] relative overflow-hidden border-t border-white/10"
     >
-      {/* Subtle Parallax Ambient Glows */}
-      <motion.div
-        style={{ y: yLight1 }}
-        className="absolute top-1/4 -left-20 w-[500px] h-[400px] bg-gold-400/8 blur-[160px] pointer-events-none rounded-full"
-      />
-      <motion.div
-        style={{ y: yLight2 }}
-        className="absolute bottom-1/4 -right-20 w-[500px] h-[400px] bg-blue-600/8 blur-[180px] pointer-events-none rounded-full"
-      />
+      {/* High-Performance Radial Accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(212,175,55,0.05)_0%,transparent_50%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
         {/* Section Header */}

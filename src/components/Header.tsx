@@ -1,14 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { Phone, Menu, X, MessageCircle, ArrowUpRight, Sparkles } from "lucide-react";
 import { BUSINESS_INFO } from "@/data/site-data";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,32 +21,32 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
-
   const navLinks = [
-    { name: "Executive Fleet", href: "/#fleet" },
-    { name: "Bespoke Services", href: "/#services" },
-    { name: "Airport Coverage", href: "/#airports" },
+    { name: "Executive Fleet", href: "/#fleet", targetId: "fleet" },
+    { name: "Bespoke Services", href: "/#services", targetId: "services" },
+    { name: "Airport Coverage", href: "/#airports", targetId: "airports" },
     { name: "About Dogan VIP", href: "/about" },
     { name: "Contact & Concierge", href: "/contact" },
   ];
 
+  const handleNavClick = useCallback((e: React.MouseEvent, item: typeof navLinks[0]) => {
+    setMobileMenuOpen(false);
+
+    if (item.targetId && pathname === "/") {
+      e.preventDefault();
+      const el = document.getElementById(item.targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [pathname]);
+
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? "bg-[#060608]/95 backdrop-blur-2xl py-3.5 sm:py-4 border-b border-white/10 shadow-2xl"
+            ? "bg-[#060608]/95 backdrop-blur-2xl py-3 sm:py-4 border-b border-white/10 shadow-2xl"
             : "bg-transparent py-4 sm:py-6"
         }`}
       >
@@ -68,6 +71,7 @@ export default function Header() {
               <Link
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link)}
                 className="text-xs lg:text-sm font-semibold text-zinc-300 hover:text-white transition-colors uppercase tracking-wider relative group py-1"
               >
                 {link.name}
@@ -88,6 +92,12 @@ export default function Header() {
 
             <a
               href="#booking-bar"
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  document.getElementById("booking-bar")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
               className="px-5 py-2.5 rounded-full bg-white hover:bg-gold-400 text-black font-extrabold text-xs uppercase tracking-wider transition-all flex items-center space-x-1.5 shadow-xl hover:shadow-gold-glow"
             >
               <span>Book a Ride</span>
@@ -98,7 +108,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden flex items-center justify-center w-11 h-11 rounded-full bg-white/5 border border-white/15 text-zinc-200 hover:text-white active:bg-white/20 transition-all touch-manipulation focus:outline-none"
+            className="md:hidden flex items-center justify-center w-11 h-11 rounded-full bg-white/10 border border-white/20 text-zinc-100 hover:text-white active:bg-white/25 transition-all touch-manipulation cursor-pointer"
             aria-label="Open Navigation Menu"
           >
             <Menu className="w-6 h-6 text-gold-400" />
@@ -106,11 +116,11 @@ export default function Header() {
         </div>
       </header>
 
-      {/* High-Performance Full-Screen Mobile Drawer */}
+      {/* Rock-Solid Full-Screen Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-[100] bg-[#07070b]/98 backdrop-blur-2xl flex flex-col justify-between p-6 animate-in fade-in duration-200 touch-manipulation"
-          style={{ overscrollBehavior: "contain" }}
+          className="fixed inset-0 z-[99999] bg-[#07070b] flex flex-col justify-between p-6 pointer-events-auto select-none"
+          style={{ height: "100dvh" }}
         >
           {/* Top Bar inside Mobile Menu */}
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
@@ -132,7 +142,7 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white active:bg-white/30 transition-all"
+              className="w-11 h-11 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white active:bg-white/30 cursor-pointer touch-manipulation transition-all"
               aria-label="Close Menu"
             >
               <X className="w-6 h-6" />
@@ -140,19 +150,19 @@ export default function Header() {
           </div>
 
           {/* Navigation Links */}
-          <div className="flex flex-col space-y-2 py-6 overflow-y-auto">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-2 px-3">
-              Navigation
+          <div className="flex flex-col space-y-2.5 py-4 overflow-y-auto">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-gold-400 px-3">
+              Navigation Menu
             </div>
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-4 py-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/10 active:bg-gold-400 active:text-black border border-white/5 text-base font-bold text-zinc-100 uppercase tracking-wider transition-all"
+                onClick={(e) => handleNavClick(e, link)}
+                className="flex items-center justify-between px-4 py-3.5 rounded-2xl bg-white/[0.04] active:bg-gold-400 active:text-black border border-white/10 text-base font-bold text-zinc-100 uppercase tracking-wider transition-all cursor-pointer touch-manipulation"
               >
                 <span>{link.name}</span>
-                <ArrowUpRight className="w-4 h-4 text-gold-400 opacity-80" />
+                <ArrowUpRight className="w-4 h-4 text-gold-400" />
               </Link>
             ))}
           </div>
@@ -161,8 +171,14 @@ export default function Header() {
           <div className="space-y-3 pt-4 border-t border-white/10">
             <a
               href="#booking-bar"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center space-x-2 py-4 rounded-2xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-sm uppercase tracking-wider shadow-gold-glow active:scale-[0.98] transition-all"
+              onClick={(e) => {
+                setMobileMenuOpen(false);
+                if (pathname === "/") {
+                  e.preventDefault();
+                  document.getElementById("booking-bar")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="w-full flex items-center justify-center space-x-2 py-4 rounded-2xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-sm uppercase tracking-wider shadow-gold-glow active:scale-[0.98] transition-all cursor-pointer touch-manipulation"
             >
               <Sparkles className="w-4 h-4" />
               <span>Instant Quote / Book</span>
@@ -171,7 +187,7 @@ export default function Header() {
             <div className="grid grid-cols-2 gap-2.5">
               <a
                 href={`tel:${BUSINESS_INFO.phoneClean}`}
-                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-white/10 border border-white/15 text-xs font-bold text-white uppercase tracking-wider active:bg-white/20"
+                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-white/10 border border-white/15 text-xs font-bold text-white uppercase tracking-wider active:bg-white/20 cursor-pointer touch-manipulation"
               >
                 <Phone className="w-4 h-4 text-gold-400" />
                 <span>Call Dispatch</span>
@@ -181,7 +197,7 @@ export default function Header() {
                 href={`https://wa.me/${BUSINESS_INFO.phoneClean.replace('+', '')}?text=Hello,%20I%20would%20like%20to%20request%20a%20VIP%20ride%20quote.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-emerald-600 active:bg-emerald-500 text-xs font-bold text-white uppercase tracking-wider shadow-lg"
+                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-emerald-600 active:bg-emerald-500 text-xs font-bold text-white uppercase tracking-wider shadow-lg cursor-pointer touch-manipulation"
               >
                 <MessageCircle className="w-4 h-4 fill-white" />
                 <span>WhatsApp</span>

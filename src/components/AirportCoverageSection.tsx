@@ -1,35 +1,18 @@
 "use client";
 
-import React, { useRef } from "react";
-import { ArrowUpRight, Plane, Sparkles } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React from "react";
+import { ArrowUpRight, Plane } from "lucide-react";
 import { AIRPORTS_DATA } from "@/data/site-data";
 import { Reveal, StaggerContainer, StaggerItem } from "./Motion";
 
 export default function AirportCoverageSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const yLight = useTransform(scrollYProgress, [0, 1], [-50, 50]);
-
   return (
     <section
       id="airports"
-      ref={containerRef}
       className="py-24 sm:py-32 bg-gradient-to-b from-[#0c0d14] via-[#0e1320] to-[#0d0f18] border-t border-white/10 relative overflow-hidden"
     >
-      {/* Background Parallax Accents */}
-      <motion.div
-        style={{ y: yLight }}
-        className="absolute top-1/2 right-10 w-[500px] h-[500px] bg-blue-500/8 blur-[180px] pointer-events-none rounded-full"
-      />
-      <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], [50, -50]) }}
-        className="absolute top-10 left-10 w-[400px] h-[400px] bg-gold-400/6 blur-[160px] pointer-events-none rounded-full"
-      />
+      {/* High-Performance Radial Accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(59,130,246,0.05)_0%,transparent_50%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
         <Reveal>

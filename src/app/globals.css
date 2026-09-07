@@ -50,37 +50,6 @@
   background: #D4AF37;
 }
 
-/* Ambient Animated Glow Mesh */
-@keyframes ambientPulse {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-    opacity: 0.18;
-  }
-  50% {
-    transform: translate(40px, -30px) scale(1.15);
-    opacity: 0.28;
-  }
-}
-
-@keyframes ambientPulse2 {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1.1);
-    opacity: 0.15;
-  }
-  50% {
-    transform: translate(-50px, 40px) scale(0.95);
-    opacity: 0.25;
-  }
-}
-
-.ambient-glow-1 {
-  animation: ambientPulse 12s ease-in-out infinite;
-}
-
-.ambient-glow-2 {
-  animation: ambientPulse2 15s ease-in-out infinite;
-}
-
 /* Luxury Input Field Styles - Box Sizing & Webkit Overflow Fixes */
 .luxury-input {
   display: block;

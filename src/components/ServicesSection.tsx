@@ -1,37 +1,21 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import { ArrowUpRight, Sparkles } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { SERVICES_DATA } from "@/data/site-data";
 import { Reveal, StaggerContainer, StaggerItem } from "./Motion";
 
 export default function ServicesSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const yOrb = useTransform(scrollYProgress, [0, 1], [-40, 40]);
   const topServices = SERVICES_DATA.slice(0, 3);
 
   return (
     <section
       id="services"
-      ref={containerRef}
       className="py-24 sm:py-32 bg-gradient-to-b from-[#121019] via-[#17141b] to-[#0c0d14] relative overflow-hidden border-t border-white/10"
     >
-      {/* Parallax Ambient Orbs */}
-      <motion.div
-        style={{ y: yOrb }}
-        className="absolute top-1/3 right-10 w-[450px] h-[350px] bg-gold-400/8 blur-[160px] pointer-events-none rounded-full"
-      />
-      <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], [40, -40]) }}
-        className="absolute bottom-10 left-1/4 w-[400px] h-[300px] bg-purple-900/10 blur-[170px] pointer-events-none rounded-full"
-      />
+      {/* High-Performance Radial Accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(168,85,247,0.04)_0%,transparent_50%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
         <Reveal>

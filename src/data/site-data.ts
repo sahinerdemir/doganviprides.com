@@ -174,7 +174,7 @@ export const SERVICES_DATA: Service[] = [
     shortDesc: "Guaranteed on-time airport pickups with live flight radar tracking, 60 minutes complimentary wait time, and inside meet-and-greet in Miami & South Florida.",
     fullDesc: "Eliminate the stress of airport arrivals. Our chauffeurs monitor your flight in real-time, automatically adjusting for delays or early arrivals across Miami International (MIA), Fort Lauderdale (FLL), Palm Beach (PBI), and Opa-Locka Private Jet Executive (OPF).",
     icon: "Plane",
-    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop",
+    image: "/services/airport-transfers.jpg",
     highlights: [
       "Automated Live Flight Radar Tracking",
       "60-Minute Complimentary Wait Time on International Flights",
@@ -189,7 +189,7 @@ export const SERVICES_DATA: Service[] = [
     shortDesc: "Total flexibility on your schedule. Have a dedicated executive vehicle and chauffeur at your disposal across Miami, Brickell, and South Beach.",
     fullDesc: "Navigate multiple business meetings in Brickell, attend private dinners in South Beach, or tour Bal Harbour and Palm Beach with your personal chauffeur standing by ready at any moment.",
     icon: "Clock",
-    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=1000&auto=format&fit=crop",
+    image: "/services/hourly-chauffeur.jpg",
     highlights: [
       "Unlimited Stops & Total Route Freedom",
       "Dedicated Chauffeur on Standby",
@@ -203,7 +203,7 @@ export const SERVICES_DATA: Service[] = [
     shortDesc: "Discreet, punctual black car service tailored for corporate executives, VIP guests, and financial roadshows in Florida & beyond.",
     fullDesc: "First impressions matter. Dogan VIP Rides provides a quiet mobile-office environment equipped with high-speed Wi-Fi and power charging ports.",
     icon: "Briefcase",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop",
+    image: "/services/corporate-travel.jpg",
     highlights: [
       "Monthly Corporate Invoicing & Receipts",
       "Strict Confidentiality & NDA Standards",

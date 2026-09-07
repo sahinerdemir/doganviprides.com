@@ -1,31 +1,19 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import { Star, Sparkles, Quote } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { TESTIMONIALS_DATA } from "@/data/site-data";
 import { Reveal, StaggerContainer, StaggerItem } from "./Motion";
 
 export default function TestimonialsSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const yGlow = useTransform(scrollYProgress, [0, 1], [-30, 30]);
   const reviews = TESTIMONIALS_DATA.slice(0, 2);
 
   return (
     <section
-      ref={containerRef}
       className="py-24 sm:py-32 bg-gradient-to-b from-[#0d0f18] via-[#15151e] to-[#0a0a0f] border-t border-white/10 relative overflow-hidden"
     >
-      {/* Background Parallax Light */}
-      <motion.div
-        style={{ y: yGlow }}
-        className="absolute top-1/4 left-1/3 w-[450px] h-[350px] bg-gold-400/8 blur-[170px] pointer-events-none rounded-full"
-      />
+      {/* High-Performance Radial Accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(212,175,55,0.05)_0%,transparent_50%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
         <Reveal>

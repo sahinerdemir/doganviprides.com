@@ -7,7 +7,7 @@ import { Sparkles, Shield, Clock } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[95vh] sm:min-h-[98vh] flex flex-col justify-center items-center text-center px-4 pt-28 sm:pt-36 pb-16 sm:pb-24 overflow-hidden bg-[#060608]">
+    <section className="relative min-h-[90vh] sm:min-h-[95vh] flex flex-col justify-center items-center text-center px-4 pt-28 sm:pt-36 pb-16 sm:pb-24 overflow-hidden bg-[#060608]">
       {/* Full-Screen Crisp & Vibrant Luxury Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
@@ -15,7 +15,7 @@ export default function Hero() {
           alt="Miami Luxury Private Jet Chauffeur VIP Service"
           fill
           priority
-          quality={95}
+          quality={80}
           className="object-cover object-center opacity-75 sm:opacity-80"
           sizes="100vw"
         />
@@ -24,9 +24,8 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black/25" />
       </div>
 
-      {/* Living Ambient Light Accents */}
-      <div className="absolute top-1/4 left-1/3 w-[600px] h-[350px] bg-gold-400/15 blur-[170px] pointer-events-none rounded-full ambient-glow-1 z-0" />
-      <div className="absolute bottom-1/4 right-1/3 w-[500px] h-[300px] bg-amber-600/10 blur-[180px] pointer-events-none rounded-full ambient-glow-2 z-0" />
+      {/* Lightweight Radial Ambient Gold Highlight */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_60%)] pointer-events-none z-0" />
 
       <div className="max-w-4xl mx-auto space-y-5 sm:space-y-6 relative z-10 w-full">
         {/* Miami Flagship Badge */}
