@@ -7,8 +7,6 @@ import {
   Clock,
   ArrowRight,
   CheckCircle2,
-  Users,
-  Briefcase,
   Loader2,
   X,
   MessageCircle,
@@ -16,6 +14,7 @@ import {
   Building2,
   Sparkles,
 } from "lucide-react";
+import LocationAutocomplete from "./LocationAutocomplete";
 import { FLEET_DATA, BUSINESS_INFO } from "@/data/site-data";
 
 type TabType = "transfer" | "hourly" | "corporate";
@@ -171,8 +170,8 @@ export default function BookingWidget() {
 
   return (
     <div id="booking-bar" className="w-full max-w-5xl mx-auto">
-      {/* Main Glass Card Container */}
-      <div className="bg-[#111116]/95 backdrop-blur-2xl rounded-3xl p-5 sm:p-7 border border-white/15 shadow-2xl relative overflow-hidden">
+      {/* Main Container */}
+      <div className="bg-[#111116]/95 backdrop-blur-2xl rounded-3xl p-5 sm:p-7 border border-white/15 shadow-2xl relative overflow-visible">
         {/* Subtle Gold Edge Highlight */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-80" />
 
@@ -226,35 +225,31 @@ export default function BookingWidget() {
         {activeTab === "transfer" && (
           <form onSubmit={handleOpenQuote} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-              {/* Pickup */}
+              {/* Pickup with Autocomplete */}
               <div className="sm:col-span-4 space-y-1.5">
                 <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
                   <MapPin className="w-3.5 h-3.5 text-gold-400" />
                   <span>Pick-Up Location</span>
                 </label>
-                <input
-                  type="text"
+                <LocationAutocomplete
                   required
-                  placeholder="e.g. MIA Airport, South Beach, Brickell..."
+                  placeholder="Type MIA, FLL, Brickell..."
                   value={pickup}
-                  onChange={(e) => setPickup(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-4 py-3.5 text-sm"
+                  onChange={setPickup}
                 />
               </div>
 
-              {/* Dropoff */}
+              {/* Dropoff with Autocomplete */}
               <div className="sm:col-span-4 space-y-1.5">
                 <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
                   <MapPin className="w-3.5 h-3.5 text-gold-400" />
                   <span>Drop-Off Destination</span>
                 </label>
-                <input
-                  type="text"
+                <LocationAutocomplete
                   required
-                  placeholder="e.g. FLL Airport, Palm Beach, Hotel..."
+                  placeholder="Type South Beach, Hotel, PBI..."
                   value={dropoff}
-                  onChange={(e) => setDropoff(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-4 py-3.5 text-sm"
+                  onChange={setDropoff}
                 />
               </div>
 
@@ -292,7 +287,7 @@ export default function BookingWidget() {
             {/* Action Bar */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-xs text-zinc-400 font-medium">
-                Flight radar tracking &amp; 60 min complimentary airport wait included.
+                Live flight radar tracking &bull; 60 min free airport waiting time included.
               </div>
 
               <button
@@ -310,19 +305,17 @@ export default function BookingWidget() {
         {activeTab === "hourly" && (
           <form onSubmit={handleOpenQuote} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-              {/* Pickup */}
+              {/* Pickup with Autocomplete */}
               <div className="sm:col-span-4 space-y-1.5">
                 <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
                   <MapPin className="w-3.5 h-3.5 text-gold-400" />
                   <span>Pick-Up Location</span>
                 </label>
-                <input
-                  type="text"
+                <LocationAutocomplete
                   required
-                  placeholder="e.g. Miami Beach, Downtown, Private Villa..."
+                  placeholder="Type South Beach, Brickell, Villa..."
                   value={hourlyPickup}
-                  onChange={(e) => setHourlyPickup(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-4 py-3.5 text-sm"
+                  onChange={setHourlyPickup}
                 />
               </div>
 
@@ -393,11 +386,11 @@ export default function BookingWidget() {
           </form>
         )}
 
-        {/* TAB 3: CORPORATE TRANSPORTATION (Contact Us Dedicated View) */}
+        {/* TAB 3: CORPORATE TRANSPORTATION */}
         {activeTab === "corporate" && (
           <div className="space-y-6 animate-in fade-in duration-200">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              {/* Left Column: Direct Action & Perks */}
+              {/* Left Column */}
               <div className="lg:col-span-5 space-y-4">
                 <div className="inline-flex items-center space-x-1.5 text-gold-400 text-xs font-bold uppercase tracking-widest">
                   <Sparkles className="w-3.5 h-3.5" />
@@ -432,7 +425,7 @@ export default function BookingWidget() {
                 </div>
               </div>
 
-              {/* Right Column: Quick Corporate Inquiry Form */}
+              {/* Right Column Form */}
               <div className="lg:col-span-7 bg-[#171720]/80 border border-white/10 rounded-2xl p-5 space-y-3.5">
                 <div className="text-xs font-bold text-white uppercase tracking-wider">
                   Or Send Us a Quick Corporate Request:
@@ -523,7 +516,7 @@ export default function BookingWidget() {
         )}
       </div>
 
-      {/* STEP 2 MODAL (Vehicle Selection & Contact) */}
+      {/* STEP 2 MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
           <div className="bg-[#101016] border border-white/15 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
