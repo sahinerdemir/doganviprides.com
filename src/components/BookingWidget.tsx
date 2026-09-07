@@ -169,18 +169,18 @@ export default function BookingWidget() {
   };
 
   return (
-    <div id="booking-bar" className="w-full max-w-5xl mx-auto">
+    <div id="booking-bar" className="w-full max-w-5xl mx-auto px-1">
       {/* Main Container */}
-      <div className="bg-[#111116]/95 backdrop-blur-2xl rounded-3xl p-5 sm:p-7 border border-white/15 shadow-2xl relative overflow-visible">
+      <div className="bg-[#111116]/95 backdrop-blur-2xl rounded-3xl p-4 sm:p-7 border border-white/15 shadow-2xl relative overflow-visible w-full box-border">
         {/* Subtle Gold Edge Highlight */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-80" />
 
-        {/* 3 Top Category Tabs - Responsive Grid on Mobile */}
+        {/* 3 Top Category Tabs - Perfectly Responsive on all screens */}
         <div className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2 border-b border-white/10 pb-4 mb-5">
           <button
             type="button"
             onClick={() => { setActiveTab("transfer"); setError(""); }}
-            className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 ${
+            className={`px-2 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 touch-manipulation ${
               activeTab === "transfer"
                 ? "bg-white text-black shadow-lg shadow-white/10"
                 : "text-zinc-400 hover:text-white hover:bg-white/5"
@@ -192,7 +192,7 @@ export default function BookingWidget() {
           <button
             type="button"
             onClick={() => { setActiveTab("hourly"); setError(""); }}
-            className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 ${
+            className={`px-2 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 touch-manipulation ${
               activeTab === "hourly"
                 ? "bg-white text-black shadow-lg shadow-white/10"
                 : "text-zinc-400 hover:text-white hover:bg-white/5"
@@ -205,14 +205,15 @@ export default function BookingWidget() {
           <button
             type="button"
             onClick={() => { setActiveTab("corporate"); setError(""); }}
-            className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 ${
+            className={`px-2 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 touch-manipulation ${
               activeTab === "corporate"
                 ? "bg-gradient-to-r from-gold-500 to-gold-400 text-black shadow-gold-glow"
                 : "text-zinc-400 hover:text-white hover:bg-white/5"
             }`}
           >
             <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-            <span className="hidden sm:inline">Corporate Transportation</span>
+            <span className="hidden md:inline">Corporate Transportation</span>
+            <span className="hidden sm:inline md:hidden">Corporate</span>
             <span className="sm:hidden">Corporate</span>
           </button>
         </div>
@@ -225,12 +226,12 @@ export default function BookingWidget() {
 
         {/* TAB 1: TRANSFER (From, To, Date, Time) */}
         {activeTab === "transfer" && (
-          <form onSubmit={handleOpenQuote} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <form onSubmit={handleOpenQuote} className="space-y-4 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 w-full">
               {/* Pickup with Autocomplete */}
-              <div className="sm:col-span-4 space-y-1.5">
+              <div className="lg:col-span-4 space-y-1.5 min-w-0 w-full">
                 <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-gold-400" />
+                  <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
                   <span>Pick-Up Location</span>
                 </label>
                 <LocationAutocomplete
@@ -242,9 +243,9 @@ export default function BookingWidget() {
               </div>
 
               {/* Dropoff with Autocomplete */}
-              <div className="sm:col-span-4 space-y-1.5">
+              <div className="lg:col-span-4 space-y-1.5 min-w-0 w-full">
                 <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-gold-400" />
+                  <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
                   <span>Drop-Off Destination</span>
                 </label>
                 <LocationAutocomplete
@@ -255,46 +256,49 @@ export default function BookingWidget() {
                 />
               </div>
 
-              {/* Date */}
-              <div className="sm:col-span-2 space-y-1.5">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Date</span>
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-3.5 py-3.5 text-xs sm:text-sm"
-                />
-              </div>
+              {/* Date & Time Container: 2-Cols on Mobile/Tablet, 4-Cols on Desktop */}
+              <div className="lg:col-span-4 grid grid-cols-2 gap-3 min-w-0 w-full">
+                {/* Date */}
+                <div className="space-y-1.5 min-w-0">
+                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                    <Calendar className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                    <span>Date</span>
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                  />
+                </div>
 
-              {/* Time */}
-              <div className="sm:col-span-2 space-y-1.5">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <Clock className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Time</span>
-                </label>
-                <input
-                  type="time"
-                  required
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-3.5 py-3.5 text-xs sm:text-sm"
-                />
+                {/* Time */}
+                <div className="space-y-1.5 min-w-0">
+                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                    <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                    <span>Time</span>
+                  </label>
+                  <input
+                    type="time"
+                    required
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Action Bar */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="text-xs text-zinc-400 font-medium">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
+              <div className="text-xs text-zinc-400 font-medium text-center sm:text-left">
                 Live flight radar tracking &bull; 60 min free airport waiting time included.
               </div>
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
               >
                 <span>Get Instant Quote</span>
                 <ArrowRight className="w-4 h-4" />
@@ -305,12 +309,12 @@ export default function BookingWidget() {
 
         {/* TAB 2: HOURLY SERVICE (Pickup, Date, Start Time, Duration) */}
         {activeTab === "hourly" && (
-          <form onSubmit={handleOpenQuote} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <form onSubmit={handleOpenQuote} className="space-y-4 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 w-full">
               {/* Pickup with Autocomplete */}
-              <div className="sm:col-span-4 space-y-1.5">
+              <div className="lg:col-span-5 space-y-1.5 min-w-0 w-full">
                 <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-gold-400" />
+                  <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
                   <span>Pick-Up Location</span>
                 </label>
                 <LocationAutocomplete
@@ -321,46 +325,49 @@ export default function BookingWidget() {
                 />
               </div>
 
-              {/* Date */}
-              <div className="sm:col-span-3 space-y-1.5">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Date</span>
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={hourlyDate}
-                  onChange={(e) => setHourlyDate(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-3.5 py-3.5 text-xs sm:text-sm"
-                />
-              </div>
+              {/* Date & Time Container */}
+              <div className="lg:col-span-4 grid grid-cols-2 gap-3 min-w-0 w-full">
+                {/* Date */}
+                <div className="space-y-1.5 min-w-0">
+                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                    <Calendar className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                    <span>Date</span>
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={hourlyDate}
+                    onChange={(e) => setHourlyDate(e.target.value)}
+                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                  />
+                </div>
 
-              {/* Start Time */}
-              <div className="sm:col-span-2 space-y-1.5">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <Clock className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Start Time</span>
-                </label>
-                <input
-                  type="time"
-                  required
-                  value={hourlyTime}
-                  onChange={(e) => setHourlyTime(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-3.5 py-3.5 text-xs sm:text-sm"
-                />
+                {/* Start Time */}
+                <div className="space-y-1.5 min-w-0">
+                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                    <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                    <span>Start Time</span>
+                  </label>
+                  <input
+                    type="time"
+                    required
+                    value={hourlyTime}
+                    onChange={(e) => setHourlyTime(e.target.value)}
+                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                  />
+                </div>
               </div>
 
               {/* Duration */}
-              <div className="sm:col-span-3 space-y-1.5">
+              <div className="lg:col-span-3 space-y-1.5 min-w-0 w-full">
                 <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <Clock className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Duration (Hours)</span>
+                  <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                  <span>Duration</span>
                 </label>
                 <select
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-3.5 py-3.5 text-xs sm:text-sm font-semibold"
+                  className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs sm:text-sm font-semibold"
                 >
                   <option value="2 Hours" className="bg-zinc-900">2 Hours (Minimum)</option>
                   <option value="4 Hours" className="bg-zinc-900">4 Hours (Half Day)</option>
@@ -372,14 +379,14 @@ export default function BookingWidget() {
             </div>
 
             {/* Action Bar */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="text-xs text-zinc-400 font-medium">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
+              <div className="text-xs text-zinc-400 font-medium text-center sm:text-left">
                 Unlimited stops &bull; Dedicated vehicle &amp; chauffeur on standby.
               </div>
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
               >
                 <span>Get Hourly Quote</span>
                 <ArrowRight className="w-4 h-4" />
@@ -390,8 +397,8 @@ export default function BookingWidget() {
 
         {/* TAB 3: CORPORATE TRANSPORTATION */}
         {activeTab === "corporate" && (
-          <div className="space-y-6 animate-in fade-in duration-200">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="space-y-6 animate-in fade-in duration-200 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center w-full">
               {/* Left Column */}
               <div className="lg:col-span-5 space-y-4">
                 <div className="inline-flex items-center space-x-1.5 text-gold-400 text-xs font-bold uppercase tracking-widest">
@@ -428,7 +435,7 @@ export default function BookingWidget() {
               </div>
 
               {/* Right Column Form */}
-              <div className="lg:col-span-7 bg-[#171720]/80 border border-white/10 rounded-2xl p-5 space-y-3.5">
+              <div className="lg:col-span-7 bg-[#171720]/80 border border-white/10 rounded-2xl p-4 sm:p-5 space-y-3.5 min-w-0 w-full box-border">
                 <div className="text-xs font-bold text-white uppercase tracking-wider">
                   Or Send Us a Quick Corporate Request:
                 </div>
@@ -442,9 +449,9 @@ export default function BookingWidget() {
                     <p className="text-xs text-zinc-400">Our executive accounts director will contact you within 15 minutes.</p>
                   </div>
                 ) : (
-                  <form onSubmit={handleCorporateSubmit} className="space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
+                  <form onSubmit={handleCorporateSubmit} className="space-y-3 w-full">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                      <div className="min-w-0">
                         <label className="text-[11px] font-bold text-zinc-300 block mb-1">Company / Organization *</label>
                         <input
                           type="text"
@@ -455,7 +462,7 @@ export default function BookingWidget() {
                           className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
                         />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <label className="text-[11px] font-bold text-zinc-300 block mb-1">Contact Name *</label>
                         <input
                           type="text"
@@ -468,8 +475,8 @@ export default function BookingWidget() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                      <div className="min-w-0">
                         <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number *</label>
                         <input
                           type="tel"
@@ -480,7 +487,7 @@ export default function BookingWidget() {
                           className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
                         />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <label className="text-[11px] font-bold text-zinc-300 block mb-1">Corporate Email</label>
                         <input
                           type="email"
@@ -492,7 +499,7 @@ export default function BookingWidget() {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="w-full min-w-0">
                       <label className="text-[11px] font-bold text-zinc-300 block mb-1">Travel Needs / Itinerary Notes</label>
                       <input
                         type="text"
@@ -506,7 +513,7 @@ export default function BookingWidget() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full py-3.5 rounded-xl bg-gold-400 hover:bg-gold-300 text-black font-extrabold text-xs uppercase tracking-widest transition-all flex items-center justify-center space-x-2"
+                      className="w-full py-3.5 rounded-xl bg-gold-400 hover:bg-gold-300 text-black font-extrabold text-xs uppercase tracking-widest transition-all flex items-center justify-center space-x-2 touch-manipulation"
                     >
                       {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Submit Corporate Inquiry</span>}
                     </button>
@@ -520,12 +527,12 @@ export default function BookingWidget() {
 
       {/* STEP 2 MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-[#101016] border border-white/15 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-[#101016] border border-white/15 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto box-border">
             {/* Close */}
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-6 right-6 text-zinc-400 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+              className="absolute top-5 right-5 text-zinc-400 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -565,7 +572,7 @@ export default function BookingWidget() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleFinalSubmit} className="space-y-5">
+              <form onSubmit={handleFinalSubmit} className="space-y-5 w-full">
                 <div>
                   <div className="text-[11px] font-bold text-gold-400 uppercase tracking-widest mb-1">
                     Step 2 of 2 &bull; Select Vehicle &amp; Confirm
@@ -579,19 +586,19 @@ export default function BookingWidget() {
                 </div>
 
                 {/* Vehicle Selection */}
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-2.5 w-full">
                   {FLEET_DATA.map((v) => (
                     <div
                       key={v.id}
                       onClick={() => setSelectedVehicle(v)}
-                      className={`cursor-pointer rounded-xl p-3 border transition-all text-left ${
+                      className={`cursor-pointer rounded-xl p-3 border transition-all text-left min-w-0 ${
                         selectedVehicle.id === v.id
                           ? "bg-white/10 border-gold-400 shadow-gold-glow"
                           : "bg-white/5 border-white/10 hover:border-white/20"
                       }`}
                     >
                       <div className="text-xs font-bold text-white truncate">{v.name}</div>
-                      <div className="text-[10px] text-zinc-400">{v.category}</div>
+                      <div className="text-[10px] text-zinc-400 truncate">{v.category}</div>
                       <div className="text-[11px] text-gold-400 font-bold mt-1">
                         {v.startingRate}
                       </div>
@@ -600,9 +607,9 @@ export default function BookingWidget() {
                 </div>
 
                 {/* Bold Contact Inputs */}
-                <div className="space-y-3 pt-1">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
+                <div className="space-y-3 pt-1 w-full">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                    <div className="min-w-0">
                       <label className="text-[11px] font-bold text-zinc-300 block mb-1">Full Name *</label>
                       <input
                         type="text"
@@ -613,8 +620,8 @@ export default function BookingWidget() {
                         className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
                       />
                     </div>
-                    <div>
-                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number (For SMS Quote) *</label>
+                    <div className="min-w-0">
+                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone (SMS Quote) *</label>
                       <input
                         type="tel"
                         required
@@ -626,8 +633,8 @@ export default function BookingWidget() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                    <div className="min-w-0">
                       <label className="text-[11px] font-bold text-zinc-300 block mb-1">Email (Optional)</label>
                       <input
                         type="email"
@@ -637,11 +644,11 @@ export default function BookingWidget() {
                         className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
                       />
                     </div>
-                    <div>
-                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Flight Number (If Airport)</label>
+                    <div className="min-w-0">
+                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Flight # (If Airport)</label>
                       <input
                         type="text"
-                        placeholder="e.g. AA 1420 / Private Tail"
+                        placeholder="e.g. AA 1420 / Tail #"
                         value={flightNum}
                         onChange={(e) => setFlightNum(e.target.value)}
                         className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
@@ -654,7 +661,7 @@ export default function BookingWidget() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2"
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
                 >
                   {loading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

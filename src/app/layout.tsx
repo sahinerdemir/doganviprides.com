@@ -77,19 +77,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         <SchemaMarkup />
       </head>
       <body className="bg-[#060608] text-zinc-100 antialiased selection:bg-gold-400 selection:text-black min-h-screen flex flex-col justify-between font-sans relative">
-        {/* Living Ambient Light Flow Elements */}
-        <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-gold-400/8 blur-[180px] pointer-events-none rounded-full ambient-glow-1 z-0" />
-        <div className="fixed bottom-1/4 right-1/4 w-[600px] h-[600px] bg-amber-500/6 blur-[200px] pointer-events-none rounded-full ambient-glow-2 z-0" />
-
         <SmoothScroll>
           <div className="relative z-10 flex flex-col min-h-screen justify-between">
             <Header />
