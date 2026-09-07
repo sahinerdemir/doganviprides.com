@@ -92,7 +92,7 @@ export const FLEET_DATA: Vehicle[] = [
     category: "Flagship Luxury SUV",
     passengers: 6,
     luggage: 6,
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop",
+    image: "/fleet/cadillac-escalade-2026.jpg",
     description: "The brand-new 2026 Escalade ESV with pillar-to-pillar 55-inch curved display, power executive doors, and whisper-quiet acoustic cabin.",
     features: [
       "55-Inch Curved Pillar-to-Pillar OLED Display",
@@ -112,7 +112,7 @@ export const FLEET_DATA: Vehicle[] = [
     category: "First-Class Executive Sedan",
     passengers: 3,
     luggage: 3,
-    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=1200&auto=format&fit=crop",
+    image: "/fleet/mercedes-s-class-2026.jpg",
     description: "The pinnacle of executive luxury. The 2026 S 580 offers reclining rear executive seating, active road noise cancellation, and massage functionality.",
     features: [
       "Burmester 4D High-End Surround Sound",
@@ -132,7 +132,7 @@ export const FLEET_DATA: Vehicle[] = [
     category: "Full-Size Luxury SUV",
     passengers: 7,
     luggage: 7,
-    image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop",
+    image: "/fleet/chevrolet-suburban-2026.jpg",
     description: "The redesigned 2026 Suburban High Country. Exceptional 3-row comfort and massive luggage capacity for group airport transfers and family travel.",
     features: [
       "Redesigned 2026 High Country Leather Cabin",
@@ -152,7 +152,7 @@ export const FLEET_DATA: Vehicle[] = [
     category: "Ultra-VIP Executive Van",
     passengers: 14,
     luggage: 14,
-    image: "https://images.unsplash.com/photo-1559297434-fae8a1916a79?q=80&w=1200&auto=format&fit=crop",
+    image: "/fleet/mercedes-sprinter-2026.jpg",
     description: "A private jet cabin on wheels. Custom handcrafted interior with diamond-stitched captain chairs, 4K smart TV, and fiber-optic starlight ceiling.",
     features: [
       "Reclining Diamond-Stitched Captain Chairs",
