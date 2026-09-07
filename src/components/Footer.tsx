@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { BUSINESS_INFO } from "@/data/site-data";
 
 export default function Footer() {
@@ -7,11 +8,19 @@ export default function Footer() {
     <footer className="bg-[#050507] text-zinc-500 text-xs border-t border-white/5 py-16">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="space-y-3">
-            <div className="text-sm font-bold text-white uppercase tracking-wider">
-              Dogan <span className="text-gold-400 font-light">VIP</span>
-            </div>
+          {/* Brand Logo & Info */}
+          <div className="space-y-4">
+            <Link href="/" className="inline-block">
+              <div className="relative h-12 w-48">
+                <Image
+                  src="/logo.png"
+                  alt="Dogan VIP Rides"
+                  fill
+                  className="object-contain object-left"
+                  sizes="200px"
+                />
+              </div>
+            </Link>
             <p className="text-xs text-zinc-400 max-w-xs leading-relaxed">
               Premier executive chauffeur and luxury black car service across New York and New Jersey.
             </p>

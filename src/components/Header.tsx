@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Phone, MessageCircle, Menu, X, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { Phone, Menu, X } from "lucide-react";
 import { BUSINESS_INFO } from "@/data/site-data";
 
 export default function Header() {
@@ -29,15 +30,22 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-[#050507]/90 backdrop-blur-xl py-4 border-b border-white/10"
-          : "bg-transparent py-6"
+          ? "bg-[#050507]/92 backdrop-blur-xl py-3.5 border-b border-white/10"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
-        {/* Brand */}
-        <Link href="/" className="flex items-center space-x-3 group">
-          <div className="text-lg sm:text-xl font-bold tracking-tight text-white uppercase">
-            Dogan <span className="text-gold-400 font-light">VIP</span>
+        {/* Brand Logo */}
+        <Link href="/" className="flex items-center group">
+          <div className="relative h-10 sm:h-12 w-44 sm:w-52 transition-transform duration-300 group-hover:scale-[1.02]">
+            <Image
+              src="/logo.png"
+              alt="Dogan VIP Rides - Executive Transportation"
+              fill
+              priority
+              className="object-contain object-left"
+              sizes="(max-width: 640px) 180px, 220px"
+            />
           </div>
         </Link>
 
@@ -55,7 +63,7 @@ export default function Header() {
         </nav>
 
         {/* Action Buttons */}
-        <div className="hidden sm:flex items-center space-x-4">
+        <div className="hidden sm:flex items-center space-x-5">
           <a
             href={`tel:${BUSINESS_INFO.phoneClean}`}
             className="text-xs text-zinc-300 hover:text-white transition-colors flex items-center space-x-1.5 font-medium tracking-wide"
@@ -66,7 +74,7 @@ export default function Header() {
 
           <a
             href="#booking-bar"
-            className="px-4 py-2 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-gold-400 transition-all flex items-center space-x-1"
+            className="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-gold-400 transition-all flex items-center space-x-1 shadow-lg"
           >
             <span>Book a Ride</span>
           </a>
