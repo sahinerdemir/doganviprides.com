@@ -22,11 +22,11 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: "Executive Fleet", href: "/#fleet", targetId: "fleet" },
-    { name: "Bespoke Services", href: "/#services", targetId: "services" },
-    { name: "Airport Coverage", href: "/#airports", targetId: "airports" },
-    { name: "About Dogan VIP", href: "/about" },
-    { name: "Contact & Concierge", href: "/contact" },
+    { name: "Fleet", href: "/#fleet", targetId: "fleet" },
+    { name: "Services", href: "/#services", targetId: "services" },
+    { name: "Airports", href: "/#airports", targetId: "airports" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
   ];
 
   const handleNavClick = useCallback((e: React.MouseEvent, item: typeof navLinks[0]) => {
@@ -50,29 +50,29 @@ export default function Header() {
             : "bg-transparent py-4 sm:py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between gap-4">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center group flex-shrink-0">
-            <div className="relative h-10 sm:h-14 w-44 sm:w-64 transition-transform duration-300 group-hover:scale-[1.02]">
+            <div className="relative h-10 sm:h-14 w-44 sm:w-60 transition-transform duration-300 group-hover:scale-[1.02]">
               <Image
                 src="/logo.png"
                 alt="Dogan VIP Rides - Miami Premier Chauffeur"
                 fill
                 priority
                 className="object-contain object-left"
-                sizes="(max-width: 640px) 180px, 260px"
+                sizes="(max-width: 640px) 180px, 240px"
               />
             </div>
           </Link>
 
-          {/* Navigation Items (Desktop) */}
-          <nav className="hidden md:flex items-center space-x-7 lg:space-x-9">
+          {/* Navigation Items (Desktop) - Single Line Guarantee */}
+          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8 flex-nowrap flex-shrink-0">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link)}
-                className="text-xs lg:text-sm font-semibold text-zinc-300 hover:text-white transition-colors uppercase tracking-wider relative group py-1"
+                className="text-xs lg:text-sm font-semibold text-zinc-300 hover:text-white transition-colors uppercase tracking-wider relative group py-1 whitespace-nowrap"
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gold-400 transition-all duration-300 group-hover:w-full" />
