@@ -542,7 +542,7 @@ export default function BookingWidget() {
                         <input
                           type="tel"
                           required
-                          placeholder="+1 (551) 331-5426"
+                          placeholder="+1 (954) 806-1142"
                           value={corpPhone}
                           onChange={(e) => setCorpPhone(e.target.value)}
                           className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
@@ -693,7 +693,7 @@ export default function BookingWidget() {
                       <input
                         type="tel"
                         required
-                        placeholder="+1 (551) 331-5426"
+                        placeholder="+1 (954) 806-1142"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
