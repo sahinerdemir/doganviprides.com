@@ -53,6 +53,66 @@ export default function BookingWidget() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
+  const generateWhatsAppUrl = (customData?: {
+    customPickup?: string;
+    customDropoff?: string;
+    customDate?: string;
+    customTime?: string;
+    customName?: string;
+    customPhone?: string;
+    customEmail?: string;
+    customFlight?: string;
+    vehicleName?: string;
+    hourlyDuration?: string;
+  }) => {
+    const currentPickup = customData?.customPickup || (activeTab === "transfer" ? pickup : hourlyPickup);
+    const currentDest = customData?.customDropoff || (activeTab === "transfer" ? dropoff : `Hourly As-Directed (${duration})`);
+    const currentDate = customData?.customDate || (activeTab === "transfer" ? date : hourlyDate);
+    const currentTime = customData?.customTime || (activeTab === "transfer" ? time : hourlyTime);
+    const guestName = customData?.customName || name;
+    const guestPhone = customData?.customPhone || phone;
+    const guestEmail = customData?.customEmail || email;
+    const flight = customData?.customFlight || flightNum;
+    const car = customData?.vehicleName || selectedVehicle.name;
+
+    const messageLines = [
+      `🌟 *NEW VIP RIDE INQUIRY - DOGAN VIP RIDES* 🌟`,
+      ``,
+      `📍 *Service:* ${activeTab === "transfer" ? "Point-to-Point VIP Transfer" : "Hourly As-Directed Chauffeur"}`,
+      `🚗 *Vehicle:* ${car}`,
+      `👤 *Passenger Name:* ${guestName}`,
+      `📱 *Phone:* ${guestPhone}`,
+      guestEmail ? `📧 *Email:* ${guestEmail}` : null,
+      flight ? `✈️ *Flight #:* ${flight}` : null,
+      ``,
+      `🛫 *Pick-Up Location:* ${currentPickup}`,
+      `🏁 *Destination:* ${currentDest}`,
+      currentDate ? `📅 *Date:* ${currentDate}` : null,
+      currentTime ? `⏰ *Time:* ${currentTime}` : null,
+      activeTab === "hourly" ? `⏱️ *Duration:* ${duration}` : null,
+      ``,
+      `_Sent directly via doganviprides.com_`,
+    ].filter(Boolean).join("\n");
+
+    return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${encodeURIComponent(messageLines)}`;
+  };
+
+  const generateCorporateWhatsAppUrl = () => {
+    const messageLines = [
+      `🏢 *NEW CORPORATE ACCOUNT INQUIRY - DOGAN VIP RIDES* 🏢`,
+      ``,
+      `🏢 *Company / Organization:* ${companyName}`,
+      `👤 *Contact Name:* ${corpName}`,
+      `📱 *Phone:* ${corpPhone}`,
+      corpEmail ? `📧 *Email:* ${corpEmail}` : null,
+      corpDetails ? `📝 *Requirements / Notes:* ${corpDetails}` : null,
+      ``,
+      `_Sent directly via doganviprides.com_`,
+    ].filter(Boolean).join("\n");
+
+    return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${encodeURIComponent(messageLines)}`;
+  };
+
   const handleOpenQuote = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -90,6 +150,19 @@ export default function BookingWidget() {
     const currentDate = activeTab === "transfer" ? date : hourlyDate;
     const currentTime = activeTab === "transfer" ? time : hourlyTime;
 
+    const waUrl = generateWhatsAppUrl({
+      customPickup: currentPickup,
+      customDropoff: currentDropoff,
+      customDate: currentDate,
+      customTime: currentTime,
+      customName: name,
+      customPhone: phone,
+      customEmail: email,
+      customFlight: flightNum,
+      vehicleName: selectedVehicle.name,
+      hourlyDuration: duration,
+    });
+
     try {
       await fetch("/api/lead", {
         method: "POST",
@@ -109,11 +182,13 @@ export default function BookingWidget() {
           createdAt: new Date().toISOString(),
         }),
       });
-      setSubmitted(true);
     } catch (err) {
-      setSubmitted(true);
+      console.error(err);
     } finally {
       setLoading(false);
+      setSubmitted(true);
+      // Directly open WhatsApp with all formatted details
+      window.open(waUrl, "_blank");
     }
   };
 
@@ -126,6 +201,8 @@ export default function BookingWidget() {
 
     setLoading(true);
     setError("");
+
+    const waUrl = generateCorporateWhatsAppUrl();
 
     try {
       await fetch("/api/lead", {
@@ -142,30 +219,14 @@ export default function BookingWidget() {
           createdAt: new Date().toISOString(),
         }),
       });
-      setSubmitted(true);
     } catch (err) {
-      setSubmitted(true);
+      console.error(err);
     } finally {
       setLoading(false);
+      setSubmitted(true);
+      // Directly open WhatsApp with corporate inquiry
+      window.open(waUrl, "_blank");
     }
-  };
-
-  const getWhatsAppLink = () => {
-    const currentPickup = activeTab === "transfer" ? pickup : hourlyPickup;
-    const currentDest = activeTab === "transfer" ? dropoff : `Hourly (${duration})`;
-    const currentDate = activeTab === "transfer" ? date : hourlyDate;
-    const currentTime = activeTab === "transfer" ? time : hourlyTime;
-
-    const text = `*New Miami VIP Ride Inquiry*%0A%0A` +
-      `*Service:* ${activeTab.toUpperCase()}%0A` +
-      `*Name:* ${name || corpName || "Guest"}%0A` +
-      `*Phone:* ${phone || corpPhone || "N/A"}%0A` +
-      `*Vehicle:* ${selectedVehicle.name}%0A` +
-      `*Pickup:* ${currentPickup}%0A` +
-      `*Destination:* ${currentDest}%0A` +
-      `*Date/Time:* ${currentDate} ${currentTime}%0A` +
-      (flightNum ? `*Flight #:* ${flightNum}` : "");
-    return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${text}`;
   };
 
   return (
@@ -513,9 +574,16 @@ export default function BookingWidget() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full py-3.5 rounded-xl bg-gold-400 hover:bg-gold-300 text-black font-extrabold text-xs uppercase tracking-widest transition-all flex items-center justify-center space-x-2 touch-manipulation"
+                      className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-widest transition-all flex items-center justify-center space-x-2 touch-manipulation shadow-lg"
                     >
-                      {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Submit Corporate Inquiry</span>}
+                      {loading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <>
+                          <MessageCircle className="w-4 h-4 fill-white" />
+                          <span>Send Corporate Request via WhatsApp</span>
+                        </>
+                      )}
                     </button>
                   </form>
                 )}
@@ -543,21 +611,21 @@ export default function BookingWidget() {
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-white">Quote Request Received!</h3>
+                  <h3 className="text-xl font-bold text-white">Opening WhatsApp...</h3>
                   <p className="text-xs sm:text-sm text-zinc-300 max-w-sm mx-auto">
-                    Thank you, <span className="text-gold-400 font-semibold">{name}</span>. Our Miami 24/7 dispatch is reviewing your route and will contact you at <span className="text-white font-medium">{phone}</span> shortly.
+                    Thank you, <span className="text-gold-400 font-semibold">{name}</span>. Your request has been formatted and transferred to our 24/7 executive dispatch on WhatsApp.
                   </p>
                 </div>
 
                 <div className="pt-2">
                   <a
-                    href={getWhatsAppLink()}
+                    href={generateWhatsAppUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center space-x-2 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition-all"
+                    className="w-full flex items-center justify-center space-x-2 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg"
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    <span>Instant WhatsApp Confirmation</span>
+                    <MessageCircle className="w-4 h-4 fill-white" />
+                    <span>Re-Open WhatsApp Chat</span>
                   </a>
                 </div>
 
@@ -568,7 +636,7 @@ export default function BookingWidget() {
                   }}
                   className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors pt-2 block mx-auto"
                 >
-                  Close
+                  Done / Close
                 </button>
               </div>
             ) : (
@@ -621,7 +689,7 @@ export default function BookingWidget() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone (SMS Quote) *</label>
+                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number (For WhatsApp) *</label>
                       <input
                         type="tel"
                         required
@@ -657,21 +725,26 @@ export default function BookingWidget() {
                   </div>
                 </div>
 
-                {/* Final Submit */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
-                >
-                  {loading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <>
-                      <span>Receive Guaranteed Flat Rate</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
+                {/* Final Submit Button */}
+                <div className="space-y-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
+                  >
+                    {loading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <MessageCircle className="w-4 h-4 fill-black" />
+                        <span>Send Request via WhatsApp</span>
+                      </>
+                    )}
+                  </button>
+                  <p className="text-[11px] text-zinc-400 text-center font-light">
+                    Directly connects to our 24/7 Miami executive dispatch on WhatsApp with your trip details.
+                  </p>
+                </div>
               </form>
             )}
           </div>
