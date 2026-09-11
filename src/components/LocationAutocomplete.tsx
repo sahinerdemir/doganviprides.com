@@ -118,7 +118,7 @@ export default function LocationAutocomplete({
   };
 
   return (
-    <div ref={containerRef} className="relative w-full">
+    <div ref={containerRef} className="relative w-full text-left">
       <input
         type="text"
         required={required}
@@ -126,7 +126,7 @@ export default function LocationAutocomplete({
         value={query}
         onChange={handleInputChange}
         onFocus={() => setIsOpen(true)}
-        className={`${className} w-full luxury-input rounded-xl px-4 py-3.5 text-base sm:text-sm pr-9`}
+        className={`${className} w-full luxury-input rounded-xl px-4 py-3.5 text-base sm:text-sm pr-9 text-left`}
       />
 
       {query && (
