@@ -5,91 +5,94 @@ import {
   MapPin,
   Calendar,
   Clock,
-  ArrowRight,
   CheckCircle2,
   Loader2,
-  X,
   MessageCircle,
   Phone,
   Building2,
   Sparkles,
+  Car,
+  Plane,
 } from "lucide-react";
 import LocationAutocomplete from "./LocationAutocomplete";
 import { FLEET_DATA, BUSINESS_INFO } from "@/data/site-data";
 
-type TabType = "transfer" | "hourly" | "corporate";
+type TabType = "hourly" | "transfer" | "corporate";
 
 export default function BookingWidget() {
-  const [activeTab, setActiveTab] = useState<TabType>("transfer");
+  const [activeTab, setActiveTab] = useState<TabType>("hourly");
 
-  // Transfer Form State
-  const [pickup, setPickup] = useState("");
-  const [dropoff, setDropoff] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-
-  // Hourly Form State
+  // Hourly Form State (Tab 1)
   const [hourlyPickup, setHourlyPickup] = useState("");
   const [hourlyDate, setHourlyDate] = useState("");
   const [hourlyTime, setHourlyTime] = useState("");
   const [duration, setDuration] = useState("4 Hours");
+  const [hourlyVehicle, setHourlyVehicle] = useState(FLEET_DATA[0]);
+  const [hourlyName, setHourlyName] = useState("");
+  const [hourlyPhone, setHourlyPhone] = useState("");
+  const [hourlyEmail, setHourlyEmail] = useState("");
+  const [hourlyNotes, setHourlyNotes] = useState("");
 
-  // Corporate Form State
+  // Transfer Form State (Tab 2)
+  const [transferPickup, setTransferPickup] = useState("");
+  const [transferDropoff, setTransferDropoff] = useState("");
+  const [transferDate, setTransferDate] = useState("");
+  const [transferTime, setTransferTime] = useState("");
+  const [transferVehicle, setTransferVehicle] = useState(FLEET_DATA[0]);
+  const [transferName, setTransferName] = useState("");
+  const [transferPhone, setTransferPhone] = useState("");
+  const [transferEmail, setTransferEmail] = useState("");
+  const [transferFlight, setTransferFlight] = useState("");
+  const [transferNotes, setTransferNotes] = useState("");
+
+  // Corporate Form State (Tab 3)
   const [companyName, setCompanyName] = useState("");
   const [corpName, setCorpName] = useState("");
   const [corpPhone, setCorpPhone] = useState("");
   const [corpEmail, setCorpEmail] = useState("");
   const [corpDetails, setCorpDetails] = useState("");
 
-  // Modal / Step 2 State for Transfer & Hourly
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState(FLEET_DATA[0]);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [flightNum, setFlightNum] = useState("");
-
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submittedTab, setSubmittedTab] = useState<TabType | null>(null);
   const [error, setError] = useState("");
 
-  const generateWhatsAppUrl = (customData?: {
-    customPickup?: string;
-    customDropoff?: string;
-    customDate?: string;
-    customTime?: string;
-    customName?: string;
-    customPhone?: string;
-    customEmail?: string;
-    customFlight?: string;
-    vehicleName?: string;
-    hourlyDuration?: string;
-  }) => {
-    const currentPickup = customData?.customPickup || (activeTab === "transfer" ? pickup : hourlyPickup);
-    const currentDest = customData?.customDropoff || (activeTab === "transfer" ? dropoff : `Hourly As-Directed (${duration})`);
-    const currentDate = customData?.customDate || (activeTab === "transfer" ? date : hourlyDate);
-    const currentTime = customData?.customTime || (activeTab === "transfer" ? time : hourlyTime);
-    const guestName = customData?.customName || name;
-    const guestPhone = customData?.customPhone || phone;
-    const guestEmail = customData?.customEmail || email;
-    const flight = customData?.customFlight || flightNum;
-    const car = customData?.vehicleName || selectedVehicle.name;
-
+  // WhatsApp Generation Handlers (Clean text, no emojis, no footer tag)
+  const generateHourlyWhatsAppUrl = () => {
     const messageLines = [
-      `*NEW VIP RIDE INQUIRY - DOGAN VIP RIDES*`,
+      `*NEW HOURLY CHAUFFEUR REQUEST - DOGAN VIP RIDES*`,
       ``,
-      `*Service:* ${activeTab === "transfer" ? "Point-to-Point VIP Transfer" : "Hourly As-Directed Chauffeur"}`,
-      `*Vehicle:* ${car}`,
-      `*Passenger Name:* ${guestName}`,
-      `*Phone:* ${guestPhone}`,
-      guestEmail ? `*Email:* ${guestEmail}` : null,
-      flight ? `*Flight #:* ${flight}` : null,
+      `*Service:* Hourly As-Directed Chauffeur`,
+      `*Vehicle:* ${hourlyVehicle.name} (${hourlyVehicle.startingRate})`,
+      `*Duration:* ${duration}`,
+      `*Passenger Name:* ${hourlyName}`,
+      `*Phone:* ${hourlyPhone}`,
+      hourlyEmail ? `*Email:* ${hourlyEmail}` : null,
       ``,
-      `*Pick-Up Location:* ${currentPickup}`,
-      `*Destination:* ${currentDest}`,
-      currentDate ? `*Date:* ${currentDate}` : null,
-      currentTime ? `*Time:* ${currentTime}` : null,
-      activeTab === "hourly" ? `*Duration:* ${duration}` : null,
+      `*Pick-Up Location:* ${hourlyPickup}`,
+      hourlyDate ? `*Date:* ${hourlyDate}` : null,
+      hourlyTime ? `*Start Time:* ${hourlyTime}` : null,
+      hourlyNotes ? `*Special Notes:* ${hourlyNotes}` : null,
+    ].filter(Boolean).join("\n");
+
+    return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${encodeURIComponent(messageLines)}`;
+  };
+
+  const generateTransferWhatsAppUrl = () => {
+    const messageLines = [
+      `*NEW TRANSFER REQUEST - DOGAN VIP RIDES*`,
+      ``,
+      `*Service:* Point-to-Point VIP / Airport Transfer`,
+      `*Preferred Vehicle:* ${transferVehicle.name} (${transferVehicle.startingRate})`,
+      `*Passenger Name:* ${transferName}`,
+      `*Phone:* ${transferPhone}`,
+      transferEmail ? `*Email:* ${transferEmail}` : null,
+      transferFlight ? `*Flight #:* ${transferFlight}` : null,
+      ``,
+      `*Pick-Up Location:* ${transferPickup}`,
+      `*Destination:* ${transferDropoff}`,
+      transferDate ? `*Date:* ${transferDate}` : null,
+      transferTime ? `*Time:* ${transferTime}` : null,
+      transferNotes ? `*Special Requests:* ${transferNotes}` : null,
     ].filter(Boolean).join("\n");
 
     return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${encodeURIComponent(messageLines)}`;
@@ -109,72 +112,35 @@ export default function BookingWidget() {
     return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${encodeURIComponent(messageLines)}`;
   };
 
-  const handleOpenQuote = (e: React.FormEvent) => {
+  // Submission Handlers
+  const handleHourlySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-
-    if (activeTab === "transfer") {
-      if (!pickup) {
-        setError("Please enter a pickup location or airport (e.g. MIA, FLL, Brickell).");
-        return;
-      }
-      if (!dropoff) {
-        setError("Please enter a destination (e.g. South Beach, Palm Beach).");
-        return;
-      }
-    } else if (activeTab === "hourly") {
-      if (!hourlyPickup) {
-        setError("Please enter a pickup location.");
-        return;
-      }
-    }
-    setIsModalOpen(true);
-  };
-
-  const handleFinalSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !phone) {
-      setError("Please provide your name and phone number.");
+    if (!hourlyPickup || !hourlyName || !hourlyPhone) {
+      setError("Please fill in the pickup location, contact name, and phone number.");
       return;
     }
 
     setLoading(true);
     setError("");
 
-    const currentPickup = activeTab === "transfer" ? pickup : hourlyPickup;
-    const currentDropoff = activeTab === "transfer" ? dropoff : `Hourly (${duration})`;
-    const currentDate = activeTab === "transfer" ? date : hourlyDate;
-    const currentTime = activeTab === "transfer" ? time : hourlyTime;
-
-    const waUrl = generateWhatsAppUrl({
-      customPickup: currentPickup,
-      customDropoff: currentDropoff,
-      customDate: currentDate,
-      customTime: currentTime,
-      customName: name,
-      customPhone: phone,
-      customEmail: email,
-      customFlight: flightNum,
-      vehicleName: selectedVehicle.name,
-      hourlyDuration: duration,
-    });
+    const waUrl = generateHourlyWhatsAppUrl();
 
     try {
       await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          serviceType: activeTab,
-          pickupLocation: currentPickup,
-          dropoffLocation: currentDropoff,
-          pickupDate: currentDate,
-          pickupTime: currentTime,
-          hourlyDuration: activeTab === "hourly" ? duration : undefined,
-          vehicle: selectedVehicle.name,
-          fullName: name,
-          phone,
-          email,
-          flightNumber: flightNum,
+          serviceType: "hourly",
+          pickupLocation: hourlyPickup,
+          dropoffLocation: `Hourly As-Directed (${duration})`,
+          pickupDate: hourlyDate,
+          pickupTime: hourlyTime,
+          hourlyDuration: duration,
+          vehicle: hourlyVehicle.name,
+          fullName: hourlyName,
+          phone: hourlyPhone,
+          email: hourlyEmail,
+          specialRequests: hourlyNotes,
           createdAt: new Date().toISOString(),
         }),
       });
@@ -182,8 +148,47 @@ export default function BookingWidget() {
       console.error(err);
     } finally {
       setLoading(false);
-      setSubmitted(true);
-      // Directly open WhatsApp with all formatted details
+      setSubmittedTab("hourly");
+      window.open(waUrl, "_blank");
+    }
+  };
+
+  const handleTransferSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!transferPickup || !transferDropoff || !transferName || !transferPhone) {
+      setError("Please fill in pickup location, destination, name, and phone number.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    const waUrl = generateTransferWhatsAppUrl();
+
+    try {
+      await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceType: "transfer",
+          pickupLocation: transferPickup,
+          dropoffLocation: transferDropoff,
+          pickupDate: transferDate,
+          pickupTime: transferTime,
+          vehicle: transferVehicle.name,
+          fullName: transferName,
+          phone: transferPhone,
+          email: transferEmail,
+          flightNumber: transferFlight,
+          specialRequests: transferNotes,
+          createdAt: new Date().toISOString(),
+        }),
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+      setSubmittedTab("transfer");
       window.open(waUrl, "_blank");
     }
   };
@@ -219,8 +224,7 @@ export default function BookingWidget() {
       console.error(err);
     } finally {
       setLoading(false);
-      setSubmitted(true);
-      // Directly open WhatsApp with corporate inquiry
+      setSubmittedTab("corporate");
       window.open(waUrl, "_blank");
     }
   };
@@ -232,36 +236,39 @@ export default function BookingWidget() {
         {/* Subtle Gold Edge Highlight */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-80" />
 
-        {/* 3 Top Category Tabs - Perfectly Responsive on all screens */}
-        <div className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2 border-b border-white/10 pb-4 mb-5">
+        {/* 3 Top Category Tabs - Hourly 1st, Transfer 2nd, Corporate 3rd */}
+        <div className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2 border-b border-white/10 pb-4 mb-6">
           <button
             type="button"
-            onClick={() => { setActiveTab("transfer"); setError(""); }}
-            className={`px-2 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 touch-manipulation ${
-              activeTab === "transfer"
-                ? "bg-white text-black shadow-lg shadow-white/10"
-                : "text-zinc-400 hover:text-white hover:bg-white/5"
-            }`}
-          >
-            <span>Transfer</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => { setActiveTab("hourly"); setError(""); }}
+            onClick={() => { setActiveTab("hourly"); setError(""); setSubmittedTab(null); }}
             className={`px-2 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 touch-manipulation ${
               activeTab === "hourly"
                 ? "bg-white text-black shadow-lg shadow-white/10"
                 : "text-zinc-400 hover:text-white hover:bg-white/5"
             }`}
           >
+            <Clock className="w-3.5 h-3.5 flex-shrink-0" />
             <span className="hidden sm:inline">Hourly Service</span>
             <span className="sm:hidden">Hourly</span>
           </button>
 
           <button
             type="button"
-            onClick={() => { setActiveTab("corporate"); setError(""); }}
+            onClick={() => { setActiveTab("transfer"); setError(""); setSubmittedTab(null); }}
+            className={`px-2 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 touch-manipulation ${
+              activeTab === "transfer"
+                ? "bg-white text-black shadow-lg shadow-white/10"
+                : "text-zinc-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Plane className="w-3.5 h-3.5 flex-shrink-0" />
+            <span className="hidden sm:inline">Airport &amp; Transfer</span>
+            <span className="sm:hidden">Transfer</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => { setActiveTab("corporate"); setError(""); setSubmittedTab(null); }}
             className={`px-2 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 touch-manipulation ${
               activeTab === "corporate"
                 ? "bg-gradient-to-r from-gold-500 to-gold-400 text-black shadow-gold-glow"
@@ -281,178 +288,394 @@ export default function BookingWidget() {
           </div>
         )}
 
-        {/* TAB 1: TRANSFER (From, To, Date, Time) */}
-        {activeTab === "transfer" && (
-          <form onSubmit={handleOpenQuote} className="space-y-4 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 w-full">
-              {/* Pickup with Autocomplete */}
-              <div className="lg:col-span-4 space-y-1.5 min-w-0 w-full">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                  <span>Pick-Up Location</span>
-                </label>
-                <LocationAutocomplete
-                  required
-                  placeholder="Type MIA, FLL, Brickell..."
-                  value={pickup}
-                  onChange={setPickup}
-                />
-              </div>
-
-              {/* Dropoff with Autocomplete */}
-              <div className="lg:col-span-4 space-y-1.5 min-w-0 w-full">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                  <span>Drop-Off Destination</span>
-                </label>
-                <LocationAutocomplete
-                  required
-                  placeholder="Type South Beach, Hotel, PBI..."
-                  value={dropoff}
-                  onChange={setDropoff}
-                />
-              </div>
-
-              {/* Date & Time Container: 2-Cols on Mobile/Tablet, 4-Cols on Desktop */}
-              <div className="lg:col-span-4 grid grid-cols-2 gap-3 min-w-0 w-full">
-                {/* Date */}
-                <div className="space-y-1.5 min-w-0">
-                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
-                    <Calendar className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                    <span>Date</span>
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
-                  />
-                </div>
-
-                {/* Time */}
-                <div className="space-y-1.5 min-w-0">
-                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
-                    <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                    <span>Time</span>
-                  </label>
-                  <input
-                    type="time"
-                    required
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Action Bar */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
-              <div className="text-xs text-zinc-400 font-medium text-center sm:text-left">
-                Live flight radar tracking &bull; 60 min free airport waiting time included.
-              </div>
-
-              <button
-                type="submit"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
-              >
-                <span>Get Instant Quote</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* TAB 2: HOURLY SERVICE (Pickup, Date, Start Time, Duration) */}
+        {/* TAB 1: HOURLY SERVICE (FIRST) */}
         {activeTab === "hourly" && (
-          <form onSubmit={handleOpenQuote} className="space-y-4 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 w-full">
-              {/* Pickup with Autocomplete */}
-              <div className="lg:col-span-5 space-y-1.5 min-w-0 w-full">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                  <span>Pick-Up Location</span>
-                </label>
-                <LocationAutocomplete
-                  required
-                  placeholder="Type South Beach, Brickell, Villa..."
-                  value={hourlyPickup}
-                  onChange={setHourlyPickup}
-                />
-              </div>
-
-              {/* Date & Time Container */}
-              <div className="lg:col-span-4 grid grid-cols-2 gap-3 min-w-0 w-full">
-                {/* Date */}
-                <div className="space-y-1.5 min-w-0">
-                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
-                    <Calendar className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                    <span>Date</span>
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={hourlyDate}
-                    onChange={(e) => setHourlyDate(e.target.value)}
-                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
-                  />
+          <div className="animate-in fade-in duration-200">
+            {submittedTab === "hourly" ? (
+              <div className="py-8 text-center space-y-4">
+                <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
+                  <CheckCircle2 className="w-7 h-7" />
                 </div>
-
-                {/* Start Time */}
-                <div className="space-y-1.5 min-w-0">
-                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
-                    <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                    <span>Start Time</span>
-                  </label>
-                  <input
-                    type="time"
-                    required
-                    value={hourlyTime}
-                    onChange={(e) => setHourlyTime(e.target.value)}
-                    className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
-                  />
+                <div className="space-y-1">
+                  <h3 className="text-xl font-bold text-white">Opening WhatsApp...</h3>
+                  <p className="text-xs sm:text-sm text-zinc-300 max-w-md mx-auto">
+                    Thank you, <span className="text-gold-400 font-semibold">{hourlyName}</span>. Your hourly reservation details have been transferred to our 24/7 executive dispatch.
+                  </p>
+                </div>
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={generateHourlyWhatsAppUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg flex items-center space-x-2"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-white" />
+                    <span>Re-Open WhatsApp Chat</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setSubmittedTab(null)}
+                    className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-zinc-300 text-xs font-bold uppercase tracking-wider transition-all"
+                  >
+                    New Hourly Request
+                  </button>
                 </div>
               </div>
+            ) : (
+              <form onSubmit={handleHourlySubmit} className="space-y-4 w-full">
+                {/* Row 1: Location, Date, Time, Duration */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 w-full">
+                  <div className="lg:col-span-5 space-y-1.5 min-w-0 w-full">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                      <span>Pick-Up Location *</span>
+                    </label>
+                    <LocationAutocomplete
+                      required
+                      placeholder="Type South Beach, Brickell, Villa..."
+                      value={hourlyPickup}
+                      onChange={setHourlyPickup}
+                    />
+                  </div>
 
-              {/* Duration */}
-              <div className="lg:col-span-3 space-y-1.5 min-w-0 w-full">
-                <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
-                  <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
-                  <span>Duration</span>
-                </label>
-                <select
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                  className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs sm:text-sm font-semibold"
-                >
-                  <option value="2 Hours" className="bg-zinc-900">2 Hours (Minimum)</option>
-                  <option value="4 Hours" className="bg-zinc-900">4 Hours (Half Day)</option>
-                  <option value="6 Hours" className="bg-zinc-900">6 Hours</option>
-                  <option value="8 Hours" className="bg-zinc-900">8 Hours (Full Day)</option>
-                  <option value="12 Hours" className="bg-zinc-900">12 Hours (All Day)</option>
-                </select>
-              </div>
-            </div>
+                  <div className="lg:col-span-4 grid grid-cols-2 gap-3 min-w-0 w-full">
+                    <div className="space-y-1.5 min-w-0">
+                      <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                        <Calendar className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                        <span>Date</span>
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={hourlyDate}
+                        onChange={(e) => setHourlyDate(e.target.value)}
+                        className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                      />
+                    </div>
 
-            {/* Action Bar */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
-              <div className="text-xs text-zinc-400 font-medium text-center sm:text-left">
-                Unlimited stops &bull; Dedicated vehicle &amp; chauffeur on standby.
-              </div>
+                    <div className="space-y-1.5 min-w-0">
+                      <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                        <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                        <span>Start Time</span>
+                      </label>
+                      <input
+                        type="time"
+                        required
+                        value={hourlyTime}
+                        onChange={(e) => setHourlyTime(e.target.value)}
+                        className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                      />
+                    </div>
+                  </div>
 
-              <button
-                type="submit"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
-              >
-                <span>Get Hourly Quote</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </form>
+                  <div className="lg:col-span-3 space-y-1.5 min-w-0 w-full">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
+                      <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                      <span>Duration</span>
+                    </label>
+                    <select
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs sm:text-sm font-semibold"
+                    >
+                      <option value="2 Hours" className="bg-zinc-900">2 Hours (Minimum)</option>
+                      <option value="3 Hours" className="bg-zinc-900">3 Hours</option>
+                      <option value="4 Hours" className="bg-zinc-900">4 Hours (Half Day)</option>
+                      <option value="6 Hours" className="bg-zinc-900">6 Hours</option>
+                      <option value="8 Hours" className="bg-zinc-900">8 Hours (Full Day)</option>
+                      <option value="12 Hours" className="bg-zinc-900">12 Hours (All Day)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Row 2: Select Vehicle with Updated Prices */}
+                <div className="pt-2">
+                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2 flex items-center space-x-1.5">
+                    <Car className="w-3.5 h-3.5 text-gold-400" />
+                    <span>Select 2026 Executive Vehicle &amp; Rate</span>
+                  </label>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 w-full">
+                    {FLEET_DATA.map((v) => (
+                      <div
+                        key={v.id}
+                        onClick={() => setHourlyVehicle(v)}
+                        className={`cursor-pointer rounded-2xl p-3.5 border transition-all text-left min-w-0 ${
+                          hourlyVehicle.id === v.id
+                            ? "bg-white/10 border-gold-400 shadow-gold-glow"
+                            : "bg-white/[0.04] border-white/10 hover:border-white/20"
+                        }`}
+                      >
+                        <div className="text-xs font-bold text-white truncate">{v.name}</div>
+                        <div className="text-[11px] text-zinc-400 truncate">{v.category}</div>
+                        <div className="text-xs text-gold-400 font-extrabold mt-1">
+                          {v.startingRate}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Row 3: Passenger Contact Information */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1 w-full">
+                  <div className="min-w-0">
+                    <label className="text-[11px] font-bold text-zinc-300 block mb-1">Passenger / Client Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Full Name"
+                      value={hourlyName}
+                      onChange={(e) => setHourlyName(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number (For WhatsApp) *</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+1 (551) 331-5426"
+                      value={hourlyPhone}
+                      onChange={(e) => setHourlyPhone(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <label className="text-[11px] font-bold text-zinc-300 block mb-1">Email (Optional)</label>
+                    <input
+                      type="email"
+                      placeholder="name@example.com"
+                      value={hourlyEmail}
+                      onChange={(e) => setHourlyEmail(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
+                    />
+                  </div>
+                </div>
+
+                {/* Action Bar */}
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 w-full border-t border-white/10 pt-4">
+                  <div className="text-xs text-zinc-400 font-medium text-center sm:text-left">
+                    Unlimited stops &bull; Dedicated chauffeur on standby &bull; Transparent flat rates.
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-widest transition-all flex items-center justify-center space-x-2 touch-manipulation shadow-lg"
+                  >
+                    {loading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <MessageCircle className="w-4 h-4 fill-white" />
+                        <span>Request Hourly via WhatsApp</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         )}
 
-        {/* TAB 3: CORPORATE TRANSPORTATION */}
+        {/* TAB 2: TRANSFER (SECOND - DIRECT REQUEST LIKE CORPORATE) */}
+        {activeTab === "transfer" && (
+          <div className="animate-in fade-in duration-200">
+            {submittedTab === "transfer" ? (
+              <div className="py-8 text-center space-y-4">
+                <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
+                  <CheckCircle2 className="w-7 h-7" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-xl font-bold text-white">Opening WhatsApp...</h3>
+                  <p className="text-xs sm:text-sm text-zinc-300 max-w-md mx-auto">
+                    Thank you, <span className="text-gold-400 font-semibold">{transferName}</span>. Your transfer itinerary has been forwarded to our 24/7 executive dispatch.
+                  </p>
+                </div>
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={generateTransferWhatsAppUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg flex items-center space-x-2"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-white" />
+                    <span>Re-Open WhatsApp Chat</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setSubmittedTab(null)}
+                    className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-zinc-300 text-xs font-bold uppercase tracking-wider transition-all"
+                  >
+                    New Transfer Request
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleTransferSubmit} className="space-y-4 w-full">
+                {/* Row 1: Pick-Up, Drop-Off, Date, Time */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 w-full">
+                  <div className="lg:col-span-4 space-y-1.5 min-w-0 w-full">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                      <span>Pick-Up Location *</span>
+                    </label>
+                    <LocationAutocomplete
+                      required
+                      placeholder="Type MIA, FLL, Brickell..."
+                      value={transferPickup}
+                      onChange={setTransferPickup}
+                    />
+                  </div>
+
+                  <div className="lg:col-span-4 space-y-1.5 min-w-0 w-full">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                      <span>Drop-Off Destination *</span>
+                    </label>
+                    <LocationAutocomplete
+                      required
+                      placeholder="Type South Beach, Hotel, PBI..."
+                      value={transferDropoff}
+                      onChange={setTransferDropoff}
+                    />
+                  </div>
+
+                  <div className="lg:col-span-4 grid grid-cols-2 gap-3 min-w-0 w-full">
+                    <div className="space-y-1.5 min-w-0">
+                      <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                        <Calendar className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                        <span>Date</span>
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={transferDate}
+                        onChange={(e) => setTransferDate(e.target.value)}
+                        className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5 min-w-0">
+                      <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center space-x-1.5 truncate">
+                        <Clock className="w-3.5 h-3.5 text-gold-400 flex-shrink-0" />
+                        <span>Time</span>
+                      </label>
+                      <input
+                        type="time"
+                        required
+                        value={transferTime}
+                        onChange={(e) => setTransferTime(e.target.value)}
+                        className="w-full luxury-input rounded-xl px-3 py-3 text-xs sm:text-sm font-medium"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Row 2: Vehicle Selection */}
+                <div className="pt-2">
+                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2 flex items-center space-x-1.5">
+                    <Car className="w-3.5 h-3.5 text-gold-400" />
+                    <span>Preferred Vehicle</span>
+                  </label>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 w-full">
+                    {FLEET_DATA.map((v) => (
+                      <div
+                        key={v.id}
+                        onClick={() => setTransferVehicle(v)}
+                        className={`cursor-pointer rounded-2xl p-3.5 border transition-all text-left min-w-0 ${
+                          transferVehicle.id === v.id
+                            ? "bg-white/10 border-gold-400 shadow-gold-glow"
+                            : "bg-white/[0.04] border-white/10 hover:border-white/20"
+                        }`}
+                      >
+                        <div className="text-xs font-bold text-white truncate">{v.name}</div>
+                        <div className="text-[11px] text-zinc-400 truncate">{v.category}</div>
+                        <div className="text-xs text-gold-400 font-extrabold mt-1">
+                          {v.startingRate}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Row 3: Passenger Details & Flight # */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1 w-full">
+                  <div className="min-w-0">
+                    <label className="text-[11px] font-bold text-zinc-300 block mb-1">Passenger Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Full Name"
+                      value={transferName}
+                      onChange={(e) => setTransferName(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number (For WhatsApp) *</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+1 (551) 331-5426"
+                      value={transferPhone}
+                      onChange={(e) => setTransferPhone(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <label className="text-[11px] font-bold text-zinc-300 block mb-1">Email (Optional)</label>
+                    <input
+                      type="email"
+                      placeholder="name@example.com"
+                      value={transferEmail}
+                      onChange={(e) => setTransferEmail(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <label className="text-[11px] font-bold text-zinc-300 block mb-1">Flight # / Notes (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. AA 1420 / Special Request"
+                      value={transferFlight}
+                      onChange={(e) => setTransferFlight(e.target.value)}
+                      className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
+                    />
+                  </div>
+                </div>
+
+                {/* Action Bar */}
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 w-full border-t border-white/10 pt-4">
+                  <div className="text-xs text-zinc-400 font-medium text-center sm:text-left">
+                    Live flight tracking &bull; 60 min complimentary airport wait time included.
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-widest transition-all flex items-center justify-center space-x-2 touch-manipulation shadow-lg"
+                  >
+                    {loading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <MessageCircle className="w-4 h-4 fill-white" />
+                        <span>Send Transfer Request via WhatsApp</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
+
+        {/* TAB 3: CORPORATE TRANSPORTATION (THIRD) */}
         {activeTab === "corporate" && (
           <div className="space-y-6 animate-in fade-in duration-200 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center w-full">
@@ -476,7 +699,7 @@ export default function BookingWidget() {
                     className="w-full flex items-center justify-center space-x-2 py-3.5 rounded-xl border border-white/20 bg-white/5 hover:border-gold-400 text-white text-xs font-bold uppercase tracking-wider transition-all"
                   >
                     <Phone className="w-4 h-4 text-gold-400" />
-                    <span>Call Corporate Dispatch: {BUSINESS_INFO.phoneDisplay}</span>
+                    <span>Call Dispatch: {BUSINESS_INFO.phoneDisplay}</span>
                   </a>
 
                   <a
@@ -494,16 +717,23 @@ export default function BookingWidget() {
               {/* Right Column Form */}
               <div className="lg:col-span-7 bg-[#171720]/80 border border-white/10 rounded-2xl p-4 sm:p-5 space-y-3.5 min-w-0 w-full box-border">
                 <div className="text-xs font-bold text-white uppercase tracking-wider">
-                  Or Send Us a Quick Corporate Request:
+                  Send Corporate Account Request:
                 </div>
 
-                {submitted ? (
+                {submittedTab === "corporate" ? (
                   <div className="py-8 text-center space-y-3">
                     <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
                       <CheckCircle2 className="w-6 h-6" />
                     </div>
                     <div className="text-sm font-bold text-white">Inquiry Received!</div>
                     <p className="text-xs text-zinc-400">Our executive accounts director will contact you within 15 minutes.</p>
+                    <button
+                      type="button"
+                      onClick={() => setSubmittedTab(null)}
+                      className="px-5 py-2.5 rounded-xl bg-white/10 text-xs text-white hover:bg-white/15"
+                    >
+                      New Corporate Inquiry
+                    </button>
                   </div>
                 ) : (
                   <form onSubmit={handleCorporateSubmit} className="space-y-3 w-full">
@@ -534,7 +764,7 @@ export default function BookingWidget() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                       <div className="min-w-0">
-                        <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number *</label>
+                        <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number (For WhatsApp) *</label>
                         <input
                           type="tel"
                           required
@@ -588,164 +818,6 @@ export default function BookingWidget() {
           </div>
         )}
       </div>
-
-      {/* STEP 2 MODAL */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-[#101016] border border-white/15 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto box-border">
-            {/* Close */}
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-5 right-5 text-zinc-400 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            {submitted ? (
-              <div className="text-center py-6 space-y-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
-                  <CheckCircle2 className="w-7 h-7" />
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-white">Opening WhatsApp...</h3>
-                  <p className="text-xs sm:text-sm text-zinc-300 max-w-sm mx-auto">
-                    Thank you, <span className="text-gold-400 font-semibold">{name}</span>. Your request has been formatted and transferred to our 24/7 executive dispatch on WhatsApp.
-                  </p>
-                </div>
-
-                <div className="pt-2">
-                  <a
-                    href={generateWhatsAppUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center space-x-2 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg"
-                  >
-                    <MessageCircle className="w-4 h-4 fill-white" />
-                    <span>Re-Open WhatsApp Chat</span>
-                  </a>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setIsModalOpen(false);
-                    setSubmitted(false);
-                  }}
-                  className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors pt-2 block mx-auto"
-                >
-                  Done / Close
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleFinalSubmit} className="space-y-5 w-full">
-                <div>
-                  <div className="text-[11px] font-bold text-gold-400 uppercase tracking-widest mb-1">
-                    Step 2 of 2 &bull; Select Vehicle &amp; Confirm
-                  </div>
-                  <h3 className="text-xl font-bold text-white">
-                    Confirm Your Miami VIP Ride
-                  </h3>
-                  <p className="text-xs text-zinc-400 mt-1">
-                    Route: <span className="text-white font-medium">{activeTab === "transfer" ? `${pickup} → ${dropoff}` : `${hourlyPickup} (${duration})`}</span>
-                  </p>
-                </div>
-
-                {/* Vehicle Selection */}
-                <div className="grid grid-cols-2 gap-2.5 w-full">
-                  {FLEET_DATA.map((v) => (
-                    <div
-                      key={v.id}
-                      onClick={() => setSelectedVehicle(v)}
-                      className={`cursor-pointer rounded-xl p-3 border transition-all text-left min-w-0 ${
-                        selectedVehicle.id === v.id
-                          ? "bg-white/10 border-gold-400 shadow-gold-glow"
-                          : "bg-white/5 border-white/10 hover:border-white/20"
-                      }`}
-                    >
-                      <div className="text-xs font-bold text-white truncate">{v.name}</div>
-                      <div className="text-[10px] text-zinc-400 truncate">{v.category}</div>
-                      <div className="text-[11px] text-gold-400 font-bold mt-1">
-                        {v.startingRate}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Bold Contact Inputs */}
-                <div className="space-y-3 pt-1 w-full">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-                    <div className="min-w-0">
-                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Full Name *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="John Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Phone Number (For WhatsApp) *</label>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="+1 (551) 331-5426"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-                    <div className="min-w-0">
-                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Email (Optional)</label>
-                      <input
-                        type="email"
-                        placeholder="john@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <label className="text-[11px] font-bold text-zinc-300 block mb-1">Flight # (If Airport)</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. AA 1420 / Tail #"
-                        value={flightNum}
-                        onChange={(e) => setFlightNum(e.target.value)}
-                        className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Final Submit Button */}
-                <div className="space-y-2">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-xs uppercase tracking-widest hover:opacity-95 shadow-gold-glow transition-all flex items-center justify-center space-x-2 touch-manipulation"
-                  >
-                    {loading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <>
-                        <MessageCircle className="w-4 h-4 fill-black" />
-                        <span>Send Request via WhatsApp</span>
-                      </>
-                    )}
-                  </button>
-                  <p className="text-[11px] text-zinc-400 text-center font-light">
-                    Directly connects to our 24/7 Miami executive dispatch on WhatsApp with your trip details.
-                  </p>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
