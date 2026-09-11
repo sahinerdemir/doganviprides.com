@@ -84,7 +84,7 @@ export default function FleetSection() {
 
                   <a
                     href="#booking-bar"
-                    className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-gold-400 text-white hover:text-black text-xs font-bold uppercase tracking-wider transition-all flex items-center space-x-1.5 shadow-md flex-shrink-0"
+                    className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-gold-400 text-white hover:text-black text-xs sm:text-sm font-bold transition-all flex items-center space-x-1.5 shadow-md flex-shrink-0"
                   >
                     <span>Reserve</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />

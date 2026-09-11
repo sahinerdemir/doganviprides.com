@@ -54,7 +54,7 @@ export default function AirportCoverageSection() {
                 <div className="pt-6 border-t border-white/5 mt-4">
                   <a
                     href="#booking-bar"
-                    className="inline-flex items-center space-x-1.5 text-xs font-semibold text-zinc-300 group-hover:text-gold-400 uppercase tracking-wider transition-colors"
+                    className="inline-flex items-center space-x-1.5 text-xs sm:text-sm font-semibold text-zinc-300 group-hover:text-gold-400 transition-colors"
                   >
                     <span>Book {ap.code} Transfer</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />

@@ -72,7 +72,7 @@ export default function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link)}
-                className="text-xs lg:text-sm font-semibold text-zinc-300 hover:text-white transition-colors uppercase tracking-wider relative group py-1 whitespace-nowrap"
+                className="text-xs lg:text-sm font-semibold text-zinc-300 hover:text-white transition-colors tracking-wide relative group py-1 whitespace-nowrap"
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gold-400 transition-all duration-300 group-hover:w-full" />
@@ -98,7 +98,7 @@ export default function Header() {
                   document.getElementById("booking-bar")?.scrollIntoView({ behavior: "smooth" });
                 }
               }}
-              className="px-5 py-2.5 rounded-full bg-white hover:bg-gold-400 text-black font-extrabold text-xs uppercase tracking-wider transition-all flex items-center space-x-1.5 shadow-xl hover:shadow-gold-glow"
+              className="px-5 py-2.5 rounded-full bg-white hover:bg-gold-400 text-black font-bold text-xs sm:text-sm transition-all flex items-center space-x-1.5 shadow-xl hover:shadow-gold-glow"
             >
               <span>Book a Ride</span>
             </a>
@@ -159,7 +159,7 @@ export default function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link)}
-                className="flex items-center justify-between px-4 py-3.5 rounded-2xl bg-white/[0.04] active:bg-gold-400 active:text-black border border-white/10 text-base font-bold text-zinc-100 uppercase tracking-wider transition-all cursor-pointer touch-manipulation"
+                className="flex items-center justify-between px-4 py-3.5 rounded-2xl bg-white/[0.04] active:bg-gold-400 active:text-black border border-white/10 text-base font-bold text-zinc-100 transition-all cursor-pointer touch-manipulation"
               >
                 <span>{link.name}</span>
                 <ArrowUpRight className="w-4 h-4 text-gold-400" />
@@ -178,7 +178,7 @@ export default function Header() {
                   document.getElementById("booking-bar")?.scrollIntoView({ behavior: "smooth" });
                 }
               }}
-              className="w-full flex items-center justify-center space-x-2 py-4 rounded-2xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-extrabold text-sm uppercase tracking-wider shadow-gold-glow active:scale-[0.98] transition-all cursor-pointer touch-manipulation"
+              className="w-full flex items-center justify-center space-x-2 py-4 rounded-2xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-black font-bold text-sm shadow-gold-glow active:scale-[0.98] transition-all cursor-pointer touch-manipulation"
             >
               <Sparkles className="w-4 h-4" />
               <span>Instant Quote / Book</span>
@@ -187,7 +187,7 @@ export default function Header() {
             <div className="grid grid-cols-2 gap-2.5">
               <a
                 href={`tel:${BUSINESS_INFO.phoneClean}`}
-                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-white/10 border border-white/15 text-xs font-bold text-white uppercase tracking-wider active:bg-white/20 cursor-pointer touch-manipulation"
+                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-white/10 border border-white/15 text-xs font-bold text-white active:bg-white/20 cursor-pointer touch-manipulation"
               >
                 <Phone className="w-4 h-4 text-gold-400" />
                 <span>Call Dispatch</span>
@@ -197,7 +197,7 @@ export default function Header() {
                 href={`https://wa.me/${BUSINESS_INFO.phoneClean.replace('+', '')}?text=Hello,%20I%20would%20like%20to%20request%20a%20VIP%20ride%20quote.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-emerald-600 active:bg-emerald-500 text-xs font-bold text-white uppercase tracking-wider shadow-lg cursor-pointer touch-manipulation"
+                className="flex items-center justify-center space-x-2 py-3.5 rounded-2xl bg-emerald-600 active:bg-emerald-500 text-xs font-bold text-white shadow-lg cursor-pointer touch-manipulation"
               >
                 <MessageCircle className="w-4 h-4 fill-white" />
                 <span>WhatsApp</span>

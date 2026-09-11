@@ -31,7 +31,7 @@ export default function LeadCtaBanner() {
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <a
               href="#booking-bar"
-              className="px-8 py-4 rounded-full bg-gold-400 text-black font-extrabold text-xs uppercase tracking-wider hover:bg-white hover:scale-105 transition-all flex items-center space-x-2 shadow-2xl shadow-gold-400/20"
+              className="px-8 py-4 rounded-full bg-gold-400 text-black font-bold text-sm hover:bg-white hover:scale-105 transition-all flex items-center space-x-2 shadow-2xl shadow-gold-400/20"
             >
               <span>Instant Quote</span>
               <ArrowRight className="w-4 h-4" />
@@ -39,7 +39,7 @@ export default function LeadCtaBanner() {
 
             <a
               href={`tel:${BUSINESS_INFO.phoneClean}`}
-              className="px-8 py-4 rounded-full bg-white/5 border border-white/15 hover:border-gold-400/50 hover:bg-white/10 text-white text-xs font-semibold uppercase tracking-wider transition-all flex items-center space-x-2 backdrop-blur-md"
+              className="px-8 py-4 rounded-full bg-white/5 border border-white/15 hover:border-gold-400/50 hover:bg-white/10 text-white text-sm font-semibold transition-all flex items-center space-x-2 backdrop-blur-md"
             >
               <Phone className="w-4 h-4 text-gold-400" />
               <span>Call {BUSINESS_INFO.phoneDisplay}</span>

@@ -63,7 +63,7 @@ export default function ServicesSection() {
                   <div className="pt-4 border-t border-white/10">
                     <a
                       href="#booking-bar"
-                      className="inline-flex items-center space-x-1.5 text-xs font-semibold text-zinc-300 group-hover:text-gold-400 uppercase tracking-wider transition-colors"
+                      className="inline-flex items-center space-x-1.5 text-xs sm:text-sm font-semibold text-zinc-300 group-hover:text-gold-400 transition-colors"
                     >
                       <span>Instant Quote</span>
                       <ArrowUpRight className="w-4 h-4" />
