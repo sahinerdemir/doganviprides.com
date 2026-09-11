@@ -7,7 +7,7 @@ import BookingWidget from "@/components/BookingWidget";
 export const metadata: Metadata = {
   title: "Contact Us & 24/7 VIP Chauffeur Dispatch | Dogan VIP Rides",
   description:
-    "Contact Dogan VIP Rides for instant quote requests, airport pickup bookings, or corporate travel inquiries. Call (954) 806-1142 or message us on WhatsApp.",
+    "Contact Dogan VIP Rides for instant quote requests, airport pickup bookings, or corporate travel inquiries. Call (551) 331-5426 or message us on WhatsApp.",
   alternates: {
     canonical: "/contact",
   },

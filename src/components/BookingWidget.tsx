@@ -76,22 +76,20 @@ export default function BookingWidget() {
     const car = customData?.vehicleName || selectedVehicle.name;
 
     const messageLines = [
-      `🌟 *NEW VIP RIDE INQUIRY - DOGAN VIP RIDES* 🌟`,
+      `*NEW VIP RIDE INQUIRY - DOGAN VIP RIDES*`,
       ``,
-      `📍 *Service:* ${activeTab === "transfer" ? "Point-to-Point VIP Transfer" : "Hourly As-Directed Chauffeur"}`,
-      `🚗 *Vehicle:* ${car}`,
-      `👤 *Passenger Name:* ${guestName}`,
-      `📱 *Phone:* ${guestPhone}`,
-      guestEmail ? `📧 *Email:* ${guestEmail}` : null,
-      flight ? `✈️ *Flight #:* ${flight}` : null,
+      `*Service:* ${activeTab === "transfer" ? "Point-to-Point VIP Transfer" : "Hourly As-Directed Chauffeur"}`,
+      `*Vehicle:* ${car}`,
+      `*Passenger Name:* ${guestName}`,
+      `*Phone:* ${guestPhone}`,
+      guestEmail ? `*Email:* ${guestEmail}` : null,
+      flight ? `*Flight #:* ${flight}` : null,
       ``,
-      `🛫 *Pick-Up Location:* ${currentPickup}`,
-      `🏁 *Destination:* ${currentDest}`,
-      currentDate ? `📅 *Date:* ${currentDate}` : null,
-      currentTime ? `⏰ *Time:* ${currentTime}` : null,
-      activeTab === "hourly" ? `⏱️ *Duration:* ${duration}` : null,
-      ``,
-      `_Sent directly via doganviprides.com_`,
+      `*Pick-Up Location:* ${currentPickup}`,
+      `*Destination:* ${currentDest}`,
+      currentDate ? `*Date:* ${currentDate}` : null,
+      currentTime ? `*Time:* ${currentTime}` : null,
+      activeTab === "hourly" ? `*Duration:* ${duration}` : null,
     ].filter(Boolean).join("\n");
 
     return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${encodeURIComponent(messageLines)}`;
@@ -99,15 +97,13 @@ export default function BookingWidget() {
 
   const generateCorporateWhatsAppUrl = () => {
     const messageLines = [
-      `🏢 *NEW CORPORATE ACCOUNT INQUIRY - DOGAN VIP RIDES* 🏢`,
+      `*NEW CORPORATE ACCOUNT INQUIRY - DOGAN VIP RIDES*`,
       ``,
-      `🏢 *Company / Organization:* ${companyName}`,
-      `👤 *Contact Name:* ${corpName}`,
-      `📱 *Phone:* ${corpPhone}`,
-      corpEmail ? `📧 *Email:* ${corpEmail}` : null,
-      corpDetails ? `📝 *Requirements / Notes:* ${corpDetails}` : null,
-      ``,
-      `_Sent directly via doganviprides.com_`,
+      `*Company / Organization:* ${companyName}`,
+      `*Contact Name:* ${corpName}`,
+      `*Phone:* ${corpPhone}`,
+      corpEmail ? `*Email:* ${corpEmail}` : null,
+      corpDetails ? `*Requirements / Notes:* ${corpDetails}` : null,
     ].filter(Boolean).join("\n");
 
     return `https://wa.me/${BUSINESS_INFO.phoneClean.replace("+", "")}?text=${encodeURIComponent(messageLines)}`;
@@ -542,7 +538,7 @@ export default function BookingWidget() {
                         <input
                           type="tel"
                           required
-                          placeholder="+1 (954) 806-1142"
+                          placeholder="+1 (551) 331-5426"
                           value={corpPhone}
                           onChange={(e) => setCorpPhone(e.target.value)}
                           className="w-full luxury-input rounded-xl px-3.5 py-2.5 text-xs"
@@ -693,7 +689,7 @@ export default function BookingWidget() {
                       <input
                         type="tel"
                         required
-                        placeholder="+1 (954) 806-1142"
+                        placeholder="+1 (551) 331-5426"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         className="w-full luxury-input rounded-xl px-3.5 py-3 text-xs"
